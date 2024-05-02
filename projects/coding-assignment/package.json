@@ -13,10 +13,8 @@
     "npm": ">=9.0"
   },
   "dependencies": {
-    "@algorandfoundation/algokit-utils": "^6.0.2",
-    "algosdk": "^2.5.0",
-    "list": "^2.0.19",
-    "pip": "^0.0.1"
+    "@algorandfoundation/algokit-utils": "^5.1.0",
+    "algosdk": "^2.5.0"
   },
   "devDependencies": {
     "dotenv": "^16.0.3",

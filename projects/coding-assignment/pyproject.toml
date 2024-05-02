@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "blockchain-valley-session-2"
+name = "coding-assignment"
 version = "0.1.0"
 description = "Algorand smart contracts"
 authors = ["iskysun96 <iskysun96@gmail.com>"]
@@ -12,6 +12,7 @@ python-dotenv = "^1.0.0"
 algorand-python = "^1.0.0"
 
 [tool.poetry.group.dev.dependencies]
+algokit-client-generator = "^1.1.3"
 puyapy = "*"
 
 [build-system]
