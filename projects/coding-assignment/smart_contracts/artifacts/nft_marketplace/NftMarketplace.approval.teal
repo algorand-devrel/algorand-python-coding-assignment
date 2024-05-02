@@ -1,0 +1,416 @@
+#pragma version 10
+
+smart_contracts.nft_marketplace.contract.NftMarketplace.approval_program:
+    txn ApplicationID
+    bnz main_entrypoint@2
+    callsub __init__
+
+main_entrypoint@2:
+    // smart_contracts/nft_marketplace/contract.py:13
+    // class NftMarketplace(arc4.ARC4Contract):
+    txn NumAppArgs
+    bz main_bare_routing@10
+    method "set_price(uint64)void"
+    method "bootstrap(asset,uint64,pay)void"
+    method "buy(pay,uint64)void"
+    method "withdraw_and_delete()void"
+    txna ApplicationArgs 0
+    match main_set_price_route@4 main_bootstrap_route@5 main_buy_route@6 main_withdraw_and_delete_route@7
+    err // reject transaction
+
+main_set_price_route@4:
+    // smart_contracts/nft_marketplace/contract.py:53
+    // @arc4.abimethod
+    txn OnCompletion
+    !
+    assert // OnCompletion is NoOp
+    txn ApplicationID
+    assert // is not creating
+    // smart_contracts/nft_marketplace/contract.py:13
+    // class NftMarketplace(arc4.ARC4Contract):
+    txna ApplicationArgs 1
+    btoi
+    // smart_contracts/nft_marketplace/contract.py:53
+    // @arc4.abimethod
+    callsub set_price
+    int 1
+    return
+
+main_bootstrap_route@5:
+    // smart_contracts/nft_marketplace/contract.py:82
+    // @arc4.abimethod
+    txn OnCompletion
+    !
+    assert // OnCompletion is NoOp
+    txn ApplicationID
+    assert // is not creating
+    // smart_contracts/nft_marketplace/contract.py:13
+    // class NftMarketplace(arc4.ARC4Contract):
+    txna ApplicationArgs 1
+    btoi
+    txnas Assets
+    txna ApplicationArgs 2
+    btoi
+    txn GroupIndex
+    int 1
+    -
+    dup
+    gtxns TypeEnum
+    int pay
+    ==
+    assert // transaction type is pay
+    // smart_contracts/nft_marketplace/contract.py:82
+    // @arc4.abimethod
+    callsub bootstrap
+    int 1
+    return
+
+main_buy_route@6:
+    // smart_contracts/nft_marketplace/contract.py:102
+    // @arc4.abimethod
+    txn OnCompletion
+    !
+    assert // OnCompletion is NoOp
+    txn ApplicationID
+    assert // is not creating
+    // smart_contracts/nft_marketplace/contract.py:13
+    // class NftMarketplace(arc4.ARC4Contract):
+    txn GroupIndex
+    int 1
+    -
+    dup
+    gtxns TypeEnum
+    int pay
+    ==
+    assert // transaction type is pay
+    txna ApplicationArgs 1
+    btoi
+    // smart_contracts/nft_marketplace/contract.py:102
+    // @arc4.abimethod
+    callsub buy
+    int 1
+    return
+
+main_withdraw_and_delete_route@7:
+    // smart_contracts/nft_marketplace/contract.py:120
+    // @arc4.abimethod(allow_actions=["DeleteApplication"])
+    txn OnCompletion
+    int DeleteApplication
+    ==
+    assert // OnCompletion is DeleteApplication
+    txn ApplicationID
+    assert // is not creating
+    callsub withdraw_and_delete
+    int 1
+    return
+
+main_bare_routing@10:
+    // smart_contracts/nft_marketplace/contract.py:13
+    // class NftMarketplace(arc4.ARC4Contract):
+    txn OnCompletion
+    !
+    assert // reject transaction
+    txn ApplicationID
+    !
+    assert // is creating
+    int 1
+    return
+
+
+// smart_contracts.nft_marketplace.contract.NftMarketplace.set_price(unitary_price: uint64) -> void:
+set_price:
+    // smart_contracts/nft_marketplace/contract.py:53-54
+    // @arc4.abimethod
+    // def set_price(self, unitary_price: UInt64) -> None:
+    proto 1 0
+    // smart_contracts/nft_marketplace/contract.py:55
+    // assert Txn.sender == Global.creator_address
+    txn Sender
+    global CreatorAddress
+    ==
+    assert
+    // smart_contracts/nft_marketplace/contract.py:57
+    // self.unitary_price = unitary_price
+    byte "unitary_price"
+    frame_dig -1
+    app_global_put
+    retsub
+
+
+// smart_contracts.nft_marketplace.contract.NftMarketplace.bootstrap(asset: uint64, unitary_price: uint64, mbr_pay: uint64) -> void:
+bootstrap:
+    // smart_contracts/nft_marketplace/contract.py:82-85
+    // @arc4.abimethod
+    // def bootstrap(
+    //     self, asset: Asset, unitary_price: UInt64, mbr_pay: gtxn.PaymentTransaction
+    // ) -> None:
+    proto 3 0
+    // smart_contracts/nft_marketplace/contract.py:86
+    // assert Txn.sender == Global.creator_address
+    txn Sender
+    global CreatorAddress
+    ==
+    assert
+    // smart_contracts/nft_marketplace/contract.py:87
+    // assert not Global.current_application_address.is_opted_in(Asset(self.asset_id))
+    global CurrentApplicationAddress
+    int 0
+    byte "asset_id"
+    app_global_get_ex
+    assert // check asset_id exists
+    asset_holding_get AssetBalance
+    bury 1
+    !
+    assert
+    // smart_contracts/nft_marketplace/contract.py:89
+    // assert mbr_pay.receiver == Global.current_application_address
+    frame_dig -1
+    gtxns Receiver
+    global CurrentApplicationAddress
+    ==
+    assert
+    // smart_contracts/nft_marketplace/contract.py:90
+    // assert mbr_pay.amount == Global.min_balance + Global.asset_opt_in_min_balance
+    frame_dig -1
+    gtxns Amount
+    global MinBalance
+    global AssetOptInMinBalance
+    +
+    ==
+    assert
+    // smart_contracts/nft_marketplace/contract.py:92
+    // self.asset_id = asset.id
+    byte "asset_id"
+    frame_dig -3
+    app_global_put
+    // smart_contracts/nft_marketplace/contract.py:93
+    // self.unitary_price = unitary_price
+    byte "unitary_price"
+    frame_dig -2
+    app_global_put
+    // smart_contracts/nft_marketplace/contract.py:94
+    // self.bootstrapped = arc4.Bool(True)
+    byte "bootstrapped"
+    byte 0x80
+    app_global_put
+    // smart_contracts/nft_marketplace/contract.py:96-100
+    // itxn.AssetTransfer(
+    //     xfer_asset=asset,
+    //     asset_receiver=Global.current_application_address,
+    //     asset_amount=0,
+    // ).submit()
+    itxn_begin
+    // smart_contracts/nft_marketplace/contract.py:98
+    // asset_receiver=Global.current_application_address,
+    global CurrentApplicationAddress
+    // smart_contracts/nft_marketplace/contract.py:99
+    // asset_amount=0,
+    int 0
+    itxn_field AssetAmount
+    itxn_field AssetReceiver
+    frame_dig -3
+    itxn_field XferAsset
+    // smart_contracts/nft_marketplace/contract.py:96
+    // itxn.AssetTransfer(
+    int axfer
+    itxn_field TypeEnum
+    int 0
+    itxn_field Fee
+    // smart_contracts/nft_marketplace/contract.py:96-100
+    // itxn.AssetTransfer(
+    //     xfer_asset=asset,
+    //     asset_receiver=Global.current_application_address,
+    //     asset_amount=0,
+    // ).submit()
+    itxn_submit
+    retsub
+
+
+// smart_contracts.nft_marketplace.contract.NftMarketplace.buy(buyer_txn: uint64, quantity: uint64) -> void:
+buy:
+    // smart_contracts/nft_marketplace/contract.py:102-107
+    // @arc4.abimethod
+    // def buy(
+    //     self,
+    //     buyer_txn: gtxn.PaymentTransaction,
+    //     quantity: UInt64,
+    // ) -> None:
+    proto 2 0
+    // smart_contracts/nft_marketplace/contract.py:108
+    // assert self.unitary_price != UInt64(0)
+    int 0
+    byte "unitary_price"
+    app_global_get_ex
+    assert // check unitary_price exists
+    assert
+    // smart_contracts/nft_marketplace/contract.py:110
+    // assert buyer_txn.sender == Txn.sender
+    frame_dig -2
+    gtxns Sender
+    txn Sender
+    ==
+    assert
+    // smart_contracts/nft_marketplace/contract.py:111
+    // assert buyer_txn.receiver == Global.current_application_address
+    frame_dig -2
+    gtxns Receiver
+    global CurrentApplicationAddress
+    ==
+    assert
+    // smart_contracts/nft_marketplace/contract.py:112
+    // assert buyer_txn.amount == self.unitary_price * quantity
+    frame_dig -2
+    gtxns Amount
+    int 0
+    byte "unitary_price"
+    app_global_get_ex
+    assert // check unitary_price exists
+    frame_dig -1
+    *
+    ==
+    assert
+    // smart_contracts/nft_marketplace/contract.py:114-118
+    // itxn.AssetTransfer(
+    //     xfer_asset=self.asset_id,
+    //     asset_receiver=Txn.sender,
+    //     asset_amount=quantity,
+    // ).submit()
+    itxn_begin
+    // smart_contracts/nft_marketplace/contract.py:115
+    // xfer_asset=self.asset_id,
+    int 0
+    byte "asset_id"
+    app_global_get_ex
+    assert // check asset_id exists
+    // smart_contracts/nft_marketplace/contract.py:116
+    // asset_receiver=Txn.sender,
+    txn Sender
+    frame_dig -1
+    itxn_field AssetAmount
+    itxn_field AssetReceiver
+    itxn_field XferAsset
+    // smart_contracts/nft_marketplace/contract.py:114
+    // itxn.AssetTransfer(
+    int axfer
+    itxn_field TypeEnum
+    int 0
+    itxn_field Fee
+    // smart_contracts/nft_marketplace/contract.py:114-118
+    // itxn.AssetTransfer(
+    //     xfer_asset=self.asset_id,
+    //     asset_receiver=Txn.sender,
+    //     asset_amount=quantity,
+    // ).submit()
+    itxn_submit
+    retsub
+
+
+// smart_contracts.nft_marketplace.contract.NftMarketplace.withdraw_and_delete() -> void:
+withdraw_and_delete:
+    // smart_contracts/nft_marketplace/contract.py:120-121
+    // @arc4.abimethod(allow_actions=["DeleteApplication"])
+    // def withdraw_and_delete(self) -> None:
+    proto 0 0
+    // smart_contracts/nft_marketplace/contract.py:122
+    // assert Txn.sender == Global.creator_address
+    txn Sender
+    global CreatorAddress
+    ==
+    assert
+    // smart_contracts/nft_marketplace/contract.py:124-129
+    // itxn.AssetTransfer(
+    //     xfer_asset=self.asset_id,
+    //     asset_receiver=Global.creator_address,
+    //     asset_amount=0,
+    //     asset_close_to=Global.creator_address,
+    // ).submit()
+    itxn_begin
+    // smart_contracts/nft_marketplace/contract.py:125
+    // xfer_asset=self.asset_id,
+    int 0
+    byte "asset_id"
+    app_global_get_ex
+    assert // check asset_id exists
+    // smart_contracts/nft_marketplace/contract.py:126
+    // asset_receiver=Global.creator_address,
+    global CreatorAddress
+    // smart_contracts/nft_marketplace/contract.py:128
+    // asset_close_to=Global.creator_address,
+    dup
+    itxn_field AssetCloseTo
+    // smart_contracts/nft_marketplace/contract.py:127
+    // asset_amount=0,
+    int 0
+    itxn_field AssetAmount
+    itxn_field AssetReceiver
+    itxn_field XferAsset
+    // smart_contracts/nft_marketplace/contract.py:124
+    // itxn.AssetTransfer(
+    int axfer
+    itxn_field TypeEnum
+    int 0
+    itxn_field Fee
+    // smart_contracts/nft_marketplace/contract.py:124-129
+    // itxn.AssetTransfer(
+    //     xfer_asset=self.asset_id,
+    //     asset_receiver=Global.creator_address,
+    //     asset_amount=0,
+    //     asset_close_to=Global.creator_address,
+    // ).submit()
+    itxn_submit
+    // smart_contracts/nft_marketplace/contract.py:131-135
+    // itxn.Payment(
+    //     receiver=Global.creator_address,
+    //     amount=0,
+    //     close_remainder_to=Global.creator_address,
+    // ).submit()
+    itxn_begin
+    // smart_contracts/nft_marketplace/contract.py:132
+    // receiver=Global.creator_address,
+    global CreatorAddress
+    // smart_contracts/nft_marketplace/contract.py:134
+    // close_remainder_to=Global.creator_address,
+    dup
+    itxn_field CloseRemainderTo
+    // smart_contracts/nft_marketplace/contract.py:133
+    // amount=0,
+    int 0
+    itxn_field Amount
+    itxn_field Receiver
+    // smart_contracts/nft_marketplace/contract.py:131
+    // itxn.Payment(
+    int pay
+    itxn_field TypeEnum
+    int 0
+    itxn_field Fee
+    // smart_contracts/nft_marketplace/contract.py:131-135
+    // itxn.Payment(
+    //     receiver=Global.creator_address,
+    //     amount=0,
+    //     close_remainder_to=Global.creator_address,
+    // ).submit()
+    itxn_submit
+    retsub
+
+
+// smart_contracts.nft_marketplace.contract.NftMarketplace.__init__() -> void:
+__init__:
+    // smart_contracts/nft_marketplace/contract.py:31
+    // def __init__(self) -> None:
+    proto 0 0
+    // smart_contracts/nft_marketplace/contract.py:32
+    // self.asset_id = UInt64(0)
+    byte "asset_id"
+    int 0
+    app_global_put
+    // smart_contracts/nft_marketplace/contract.py:33
+    // self.unitary_price = UInt64(0)
+    byte "unitary_price"
+    int 0
+    app_global_put
+    // smart_contracts/nft_marketplace/contract.py:34
+    // self.bootstrapped = arc4.Bool(False)
+    byte "bootstrapped"
+    byte 0x00
+    app_global_put
+    retsub
