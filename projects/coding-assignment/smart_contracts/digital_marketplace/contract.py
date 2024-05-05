@@ -1,13 +1,5 @@
 # pyright: reportMissingModuleSource=false
-from algopy import (
-    Asset,
-    Global,
-    Txn,
-    UInt64,
-    arc4,
-    gtxn,
-    itxn,
-)
+from algopy import *  # 지금은 다 import하고 있는데 앱 완성 후 필요한 것만 import하도록 수정해주는게 best practice입니다~
 
 """
 DigitalMarketplace 앱 설명
@@ -20,6 +12,8 @@ DigitalMarketplace 앱 설명
 3. 구매자가 앱에서 판매하는 에셋(ASA)을 buy메서드를 호출해 구매합니다.
 4. 앱 생성자(판매자)가 withdraw_and_delete 메서드를 호출해 앱 계정에 남아있는 에셋(ASA)을 앱 계정으로 전송하고, 모든 수익금을 판매자 계정으로 송금한 뒤, 스마트 계약을 삭제합니다.
 번외: set_price 메서드를 통해 판매할 에셋(ASA)의 단가를 변경할 수 있습니다.
+
+총 5문제로 구성되어 있고 각 문제에 "*** 여기에 코드 작성 ***" 부분에 코드를 작성하시면 됩니다.
 """
 
 
@@ -44,7 +38,9 @@ class DigitalMarketplace(arc4.ARC4Contract):
     """
 
     def __init__(self) -> None:
-        self.asset_id = UInt64(0)
+        # 문제 1 시작
+        "*** 여기에 코드 작성 ***"
+        # 문제 1 끝
 
     """
     문제 2
@@ -65,9 +61,9 @@ class DigitalMarketplace(arc4.ARC4Contract):
 
     @arc4.abimethod
     def set_price(self, unitary_price: UInt64) -> None:
-        assert Txn.sender == Global.creator_address
-
-        self.unitary_price = unitary_price
+        # 문제 2 시작
+        "*** 여기에 코드 작성 ***"
+        # 문제 2 끝
 
     """
     문제 3
@@ -91,34 +87,24 @@ class DigitalMarketplace(arc4.ARC4Contract):
        Inner Transaction을 사용해야합니다. 자세한 사항은 힌트 2를 참고해주세요.
 
     힌트 1 - Global: https://algorandfoundation.github.io/puya/api-algopy.html#algopy.Global
-    힌트 2 - Inner Transaction: https://algorandfoundation.github.io/puya/lg-transactions.html#inner-transactions
+    힌트 2 - Transaction Type (gtxn) 사용법: https://algorandfoundation.github.io/puya/api-algopy.gtxn.html#module-algopy.gtxn
+    힌트 3 - Inner Transaction: https://algorandfoundation.github.io/puya/lg-transactions.html#inner-transactions
     """
 
     @arc4.abimethod
     def bootstrap(
         self, asset: Asset, unitary_price: UInt64, mbr_pay: gtxn.PaymentTransaction
     ) -> None:
-        assert Txn.sender == Global.creator_address
-        assert not Global.current_application_address.is_opted_in(Asset(self.asset_id))
-
-        assert mbr_pay.receiver == Global.current_application_address
-        assert mbr_pay.amount == Global.min_balance + Global.asset_opt_in_min_balance
-
-        self.asset_id = asset.id
-        self.unitary_price = unitary_price
-        self.bootstrapped = True
-
-        itxn.AssetTransfer(
-            xfer_asset=asset,
-            asset_receiver=Global.current_application_address,
-            asset_amount=0,
-        ).submit()
+        # 문제 3 시작
+        "*** 여기에 코드 작성 ***"
+        # 문제 3 끝
 
     """
     문제 4
     buy 메서드를 구현하세요.
 
-    buy 메서드는 앱에서 판매하는 에셋(ASA)을 구매할때 구매자가 호출하는 메서드입니다.
+    buy 메서드는 앱에서 판매하는 에셋(ASA)을 구매할때 구매자가 호출하는 메서드입니다. 
+    즉 앱 계정으로 알고를 송금하는 트랜잭션과 어토믹 그룹에 묶어서 호출해야합니다!
 
     buy 메서드는 호출 시 아래 사항들을 만족해야 합니다.
     1. unitary_price 글로벌 상태가 0이 아닌지 체크해야합니다. 0이라면 부트스트랩이 안된 상태입니다.
@@ -133,7 +119,9 @@ class DigitalMarketplace(arc4.ARC4Contract):
     1. 구매자에게 에셋(ASA)을 전송합니다. 이때 에셋의 수량은 quantity 전달값만큼 보냅니다. 
        이 또한 앱계정이 보내는 트랜잭션이니 Inner Transaction을 사용하세요!
 
-    힌트 1 - Inner Transaction: https://algorandfoundation.github.io/puya/lg-transactions.html#inner-transactions
+    힌트 1 - Transaction Type (gtxn) 사용법: https://algorandfoundation.github.io/puya/api-algopy.gtxn.html#module-algopy.gtxn
+    힌트 2 - Inner Transaction: https://algorandfoundation.github.io/puya/lg-transactions.html#inner-transactions
+
     """
 
     @arc4.abimethod
@@ -142,17 +130,9 @@ class DigitalMarketplace(arc4.ARC4Contract):
         buyer_txn: gtxn.PaymentTransaction,
         quantity: UInt64,
     ) -> None:
-        assert self.unitary_price != UInt64(0)
-
-        assert buyer_txn.sender == Txn.sender
-        assert buyer_txn.receiver == Global.current_application_address
-        assert buyer_txn.amount == self.unitary_price * quantity
-
-        itxn.AssetTransfer(
-            xfer_asset=self.asset_id,
-            asset_receiver=Txn.sender,
-            asset_amount=quantity,
-        ).submit()
+        # 문제 4 시작
+        "*** 여기에 코드 작성 ***"
+        # 문제 4 끝
 
     """
     문제 5 (쪼금 어려움 😝)
@@ -179,21 +159,9 @@ class DigitalMarketplace(arc4.ARC4Contract):
        이때 close_remainder_to 패러미터를 앱 생성자(판매자)로 설정하여 알고 전액(미니멈 밸런스 포함)을 앱 생성자(판매자)에게 보냅니다.
        close_remainder_to가 설정되어있기 때문에 amount와 상관없이 알고 전액이 송금됩니다. 
     이때 두 트랜잭션 다 앱 계정이 보내는 트랜잭션이기 때문에 Inner Transaction을 사용하세요!
+
+    이번 문제는 함수 정의까지 다 구현해주세요! 함수 이름은 withdraw_and_delete로 해주세요.
     """
-
-    @arc4.abimethod(allow_actions=["DeleteApplication"])
-    def withdraw_and_delete(self) -> None:
-        assert Txn.sender == Global.creator_address
-
-        itxn.AssetTransfer(
-            xfer_asset=self.asset_id,
-            asset_receiver=Global.creator_address,
-            asset_amount=0,
-            asset_close_to=Global.creator_address,
-        ).submit()
-
-        itxn.Payment(
-            receiver=Global.creator_address,
-            amount=0,
-            close_remainder_to=Global.creator_address,
-        ).submit()
+    # 문제 5 시작
+    "*** 여기에 코드 작성 ***"
+    # 문제 5 끝

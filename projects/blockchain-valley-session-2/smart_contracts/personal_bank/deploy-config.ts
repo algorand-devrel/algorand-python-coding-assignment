@@ -19,11 +19,14 @@ export async function deploy() {
 
   const dispenser = await algorand.account.dispenser()
   for (let i = 0; i < accounts.length; i++) {
-    await algorand.send.payment({
-      sender: dispenser.addr,
-      receiver: accounts[i].addr,
-      amount: algokit.algos(10),
-    })
+    await algorand.send.payment(
+      {
+        sender: dispenser.addr,
+        receiver: accounts[i].addr,
+        amount: algokit.algos(10),
+      },
+      { suppressLog: true },
+    )
   }
 
   //1. Deployer의 Personal Bank 앱 클라이언트 생성
@@ -41,11 +44,14 @@ export async function deploy() {
   const app = await appClient.create.bare()
 
   // 3. 앱 미니멈 밸런스 0.1알고를 송금 (https://developer.algorand.org/docs/get-details/dapps/smart-contracts/apps/?from_query=minimum#minimum-balance-requirement-for-a-smart-contract)
-  await algorand.send.payment({
-    sender: deployer.addr,
-    receiver: app.appAddress,
-    amount: algokit.algos(0.1),
-  })
+  await algorand.send.payment(
+    {
+      sender: deployer.addr,
+      receiver: app.appAddress,
+      amount: algokit.algos(0.1),
+    },
+    { suppressLog: true },
+  )
 
   // User1 User2의 앱 클라이언트를 생성
   const user1AppClient = new PersonalBankClient(
@@ -90,7 +96,7 @@ export async function deploy() {
       첫번째 전달값으로 넣어주면 자동으로 어토믹 그룹으로 묶어줍니다.
    
    */
-    await appClient.compose().optIn.bare().deposit({ ptxn: depositTxn }).execute()
+    await appClient.compose().optIn.bare().deposit({ ptxn: depositTxn }).execute({ suppressLog: true })
 
     console.log(`=== ${userName} 출금 전 ===`)
 
