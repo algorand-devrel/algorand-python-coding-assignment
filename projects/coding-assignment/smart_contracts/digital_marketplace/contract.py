@@ -31,20 +31,22 @@ class DigitalMarketplace(arc4.ARC4Contract):
     DigitalMarketplace 앱은 세개의 상태를 가지고 있습니다.
     1. asset_id: 판매할 에셋(ASA)의 아이디; UInt64타입을 가진 글로벌 상태(Global State)
     2. unitary_price: 판매할 에셋(ASA)의 가격. UInt64타입을 가진 글로벌 상태(Global State)
-    3. bootstrapped: 앱에서 에셋을 판매할 준비가 되었는지 체크하는 Bool 타입의 글로벌 상태(Global State). bootstrap 메서드가 실행되면 True로 변경됩니다.
+    3. bootstrapped: 앱에서 에셋을 판매할 준비가 되었는지 체크하는 bool 타입의 글로벌 상태(Global State). bootstrap 메서드가 실행되면 True로 변경됩니다.
 
-    주의사항!
-    AVM은 Bytes 타입과 UInt64 타입만 지원합니다. 다른 타입을 사용하고 싶으면 (예: Bool) arc4타입을 사용하세요.
-    - arc4 타입: https://algorandfoundation.github.io/puya/lg-arc4.html#types
+    재밌는 팩트!
+    AVM은 Bytes 타입과 UInt64 타입만 지원합니다. 그래서 다른 타입을 사용하고 싶으면 보통 arc4타입을 사용합니다. 하지만
+    Algorand Python에서는 bool, string 타입은 파이썬 코드와 동일하게 사용할 수 있습니다. 예를 들어 bool 타입은 True, False로 표헌하면 되고,
+    string 타입은 "Hello, World!"와 같이 표현하면 됩니다. Algorand Python에서 데이터 타입을 사용하는 방법은 아래 링크를 참고해주세요.
+    - arc4 타입: https://algorandfoundation.github.io/puya/lg-types.html#types
 
-    힌트 1: https://algorandfoundation.github.io/puya/lg-storage.html#global-storage
-    힌트 2: https://github.com/algorandfoundation/puya/blob/11843f6bc4bb6e4c56ac53e3980f74df69d07397/examples/global_state/contract.py#L5
+    힌트 1 - 글러벌 상태: https://algorandfoundation.github.io/puya/lg-storage.html#global-storage
+    힌트 2 - 코드 예시: https://github.com/algorandfoundation/puya/blob/11843f6bc4bb6e4c56ac53e3980f74df69d07397/examples/global_state/contract.py#L5
     """
 
     def __init__(self) -> None:
         self.asset_id = UInt64(0)
         self.unitary_price = UInt64(0)
-        self.bootstrapped = arc4.Bool(False)
+        self.bootstrapped = False
 
     """
     문제 2
@@ -86,7 +88,7 @@ class DigitalMarketplace(arc4.ARC4Contract):
     bootstrap 메서드는 아래 기능들을 수행합니다.
     1. asset_id 글로벌 상태를 판매할 ASA 아이디로 업데이트합니다.
     2. unitary_price 글로벌 상태를 판매할 ASA의 단가로 업데이트합니다.
-    3. bootstrapped 글로벌 상태를 True로 변경합니다. 이때 Bool 타입은 arc4 타입인것을 기억하세요!
+    3. bootstrapped 글로벌 상태를 True로 변경합니다.
     4. 앱이 판매할 ASA를 보유할 수 있도록 앱 계정으로 판매할 ASA에 옵트인합니다. 이때 앱 계정이 트랜잭션을 보내는 것이기 때문에
        Inner Transaction을 사용해야합니다. 자세한 사항은 힌트 2를 참고해주세요.
 
@@ -106,7 +108,7 @@ class DigitalMarketplace(arc4.ARC4Contract):
 
         self.asset_id = asset.id
         self.unitary_price = unitary_price
-        self.bootstrapped = arc4.Bool(True)
+        self.bootstrapped = True
 
         itxn.AssetTransfer(
             xfer_asset=asset,
