@@ -9,6 +9,8 @@
 2. 코드 데모 (30분)
 3. 코딩 세션 (2시간)
 
+알고랜드 스마트 계약에 관한 모든 것 👉 [PPT 슬라이드](https://docs.google.com/presentation/d/14pxp2lyb_DLpU0r7N-daEa8bXPluC8n9aEVMQM202cU/edit?usp=sharing)
+
 이번 코딩 세션에서는 다음과 같은 디지털 마켓플레이스 스마트 계약을 [알고랜드 파이썬](https://algorandfoundation.github.io/puya/index.html)을 사용해서 구현해보겠습니다.
 
 DigitalMarketplace 앱 설명
