@@ -45,8 +45,6 @@ class DigitalMarketplace(arc4.ARC4Contract):
 
     def __init__(self) -> None:
         self.asset_id = UInt64(0)
-        self.unitary_price = UInt64(0)
-        self.bootstrapped = False
 
     """
     문제 2
