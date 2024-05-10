@@ -4,14 +4,28 @@ smart_contracts.personal_bank.contract.PersonalBank.approval_program:
     // smart_contracts/personal_bank/contract.py:14
     // class PersonalBank(ARC4Contract):
     txn NumAppArgs
-    bz main_bare_routing@6
+    bz main_bare_routing@7
+    method "opt_in_to_app()void"
     method "deposit(pay)uint64"
     method "withdraw()uint64"
     txna ApplicationArgs 0
-    match main_deposit_route@2 main_withdraw_route@3
+    match main_opt_in_to_app_route@2 main_deposit_route@3 main_withdraw_route@4
     err // reject transaction
 
-main_deposit_route@2:
+main_opt_in_to_app_route@2:
+    // smart_contracts/personal_bank/contract.py:18
+    // @arc4.abimethod(allow_actions=["OptIn"])
+    txn OnCompletion
+    int OptIn
+    ==
+    assert // OnCompletion is OptIn
+    txn ApplicationID
+    assert // is not creating
+    callsub opt_in_to_app
+    int 1
+    return
+
+main_deposit_route@3:
     // smart_contracts/personal_bank/contract.py:22
     // @arc4.abimethod()
     txn OnCompletion
@@ -40,7 +54,7 @@ main_deposit_route@2:
     int 1
     return
 
-main_withdraw_route@3:
+main_withdraw_route@4:
     // smart_contracts/personal_bank/contract.py:38
     // @arc4.abimethod(allow_actions=["CloseOut"])
     txn OnCompletion
@@ -58,33 +72,32 @@ main_withdraw_route@3:
     int 1
     return
 
-main_bare_routing@6:
+main_bare_routing@7:
     // smart_contracts/personal_bank/contract.py:14
     // class PersonalBank(ARC4Contract):
     txn OnCompletion
-    switch main_create@7 main_opt_in_to_app@8
-    err // reject transaction
-
-main_create@7:
-    // smart_contracts/personal_bank/contract.py:14
-    // class PersonalBank(ARC4Contract):
+    !
+    assert // reject transaction
     txn ApplicationID
     !
     assert // is creating
     int 1
     return
 
-main_opt_in_to_app@8:
-    // smart_contracts/personal_bank/contract.py:18
-    // @arc4.baremethod(allow_actions=["OptIn"])
-    txn ApplicationID
-    assert // is not creating
+
+// smart_contracts.personal_bank.contract.PersonalBank.opt_in_to_app() -> void:
+opt_in_to_app:
     // smart_contracts/personal_bank/contract.py:18-19
-    // @arc4.baremethod(allow_actions=["OptIn"])
+    // @arc4.abimethod(allow_actions=["OptIn"])
     // def opt_in_to_app(self) -> None:
-    callsub opt_in_to_app
-    int 1
-    return
+    proto 0 0
+    // smart_contracts/personal_bank/contract.py:20
+    // self.balance[Txn.sender] = UInt64(0)
+    txn Sender
+    byte "balance"
+    int 0
+    app_local_put
+    retsub
 
 
 // smart_contracts.personal_bank.contract.PersonalBank.deposit(ptxn: uint64) -> uint64:
@@ -200,19 +213,4 @@ withdraw:
     itxn_submit
     // smart_contracts/personal_bank/contract.py:49
     // return userBalance
-    retsub
-
-
-// smart_contracts.personal_bank.contract.PersonalBank.opt_in_to_app() -> void:
-opt_in_to_app:
-    // smart_contracts/personal_bank/contract.py:18-19
-    // @arc4.baremethod(allow_actions=["OptIn"])
-    // def opt_in_to_app(self) -> None:
-    proto 0 0
-    // smart_contracts/personal_bank/contract.py:20
-    // self.balance[Txn.sender] = UInt64(0)
-    txn Sender
-    byte "balance"
-    int 0
-    app_local_put
     retsub

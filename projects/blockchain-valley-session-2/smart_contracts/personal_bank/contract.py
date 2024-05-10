@@ -15,7 +15,7 @@ class PersonalBank(ARC4Contract):
     def __init__(self) -> None:
         self.balance = LocalState(UInt64)
 
-    @arc4.baremethod(allow_actions=["OptIn"])
+    @arc4.abimethod(allow_actions=["OptIn"])
     def opt_in_to_app(self) -> None:
         self.balance[Txn.sender] = UInt64(0)
 

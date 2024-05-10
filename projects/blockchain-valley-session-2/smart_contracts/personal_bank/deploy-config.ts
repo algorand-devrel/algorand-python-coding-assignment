@@ -96,7 +96,7 @@ export async function deploy() {
       첫번째 전달값으로 넣어주면 자동으로 어토믹 그룹으로 묶어줍니다.
    
    */
-    await appClient.compose().optIn.bare().deposit({ ptxn: depositTxn }).execute({ suppressLog: true })
+    await appClient.compose().optIn.optInToApp({}).deposit({ ptxn: depositTxn }).execute({ suppressLog: true })
 
     console.log(`=== ${userName} 출금 전 ===`)
 
