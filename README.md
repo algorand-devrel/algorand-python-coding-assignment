@@ -41,11 +41,13 @@ cd [DIRECTORY_OF_YOUR_CHOICE]
 git clone [FORKED_REPO_URL]
 ```
 3. VSCode에서 이 폴더를 열람해주세요.
-4. 열람 후 `blockchain-valley-session-2.code-workspace` 파일을 열람 후 `open workspace` 버튼을 눌러 workspace 모드를 실행시켜주세요
-5. 이제 VSCode 터미널이 3개가 자동 생성될 것 입니다: `ROOT` `blockchain-valley-2` `coding-assignment`.  이 중 `coding-assignment` VSCode 터미널에서 `algokit project bootstrap all` 커맨드를 실행시켜 dependencies들을 설치해주세요.
+4. 열람 후 `blockchain-valley-session-2.code-workspace` 파일을 열람 후 `open workspace` 버튼을 눌러 workspace 모드를 실행시켜주세요.
+5. 이제 VSCode 터미널이 3개가 자동 생성될 것 입니다: `ROOT` `blockchain-valley-2` `coding-assignment`.  이 중 `ROOT` VSCode 터미널에서 `algokit project bootstrap all` 커맨드를 실행시켜 dependencies들을 설치해주세요. 이러면 모든 프로젝트 폴더의 dependencies들이 설치됩니다.
 ```bash
 algokit project bootstrap all
 ```
+6. 이제 `coding-assignment` 터미널을 선택한 뒤 `poetry shell` 커맨드를 실행해 파이썬 virtual environment를 활성화 시켜주세요.
+   1. 파이썬 virtual environment를 비활성화 시킬때는 `exit` 커맨드를 실행하시면 됩니다.
 
 리포 fork, clone 튜토리얼:
 https://github.com/algorand-fix-the-bug-campaign/challenge-1/assets/52557585/acde8053-a8dd-4f53-8bad-45de1068bfda
