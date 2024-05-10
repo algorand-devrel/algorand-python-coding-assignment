@@ -4,7 +4,7 @@ from algopy import *  # 지금은 다 import하고 있는데 앱 완성 후 필�
 """
 DigitalMarketplace 앱 설명
 
-이 간단한 DigitalMarketplace 앱은 에섯(ASA)를 판매할 수 있는 스마트 계약입니다.
+이 간단한 DigitalMarketplace 앱은 에셋(ASA)를 판매할 수 있는 스마트 계약입니다.
 
 이 앱의 lifecycle은 아래와 같습니다.
 1. 앱 생성자(판매자)가 앱을 생성합니다.
@@ -20,7 +20,7 @@ DigitalMarketplace 앱 설명
 class DigitalMarketplace(arc4.ARC4Contract):
     """
     문제 1
-    DigitalMarketplace 앱의 상태를 구현하세요.
+    DigitalMarketplace 앱이 기록 및 유지할 상태를 정의하세요.
 
     DigitalMarketplace 앱은 세개의 상태를 가지고 있습니다.
     1. asset_id: 판매할 에셋(ASA)의 아이디; UInt64타입을 가진 글로벌 상태(Global State)
@@ -33,7 +33,7 @@ class DigitalMarketplace(arc4.ARC4Contract):
     string 타입은 "Hello, World!"와 같이 표현하면 됩니다. Algorand Python에서 데이터 타입을 사용하는 방법은 아래 링크를 참고해주세요.
     - arc4 타입: https://algorandfoundation.github.io/puya/lg-types.html#types
 
-    힌트 1 - 글러벌 상태: https://algorandfoundation.github.io/puya/lg-storage.html#global-storage
+    힌트 1 - 글로벌 상태: https://algorandfoundation.github.io/puya/lg-storage.html#global-storage
     힌트 2 - 코드 예시: https://github.com/algorandfoundation/puya/blob/11843f6bc4bb6e4c56ac53e3980f74df69d07397/examples/global_state/contract.py#L5
     """
 
@@ -50,10 +50,10 @@ class DigitalMarketplace(arc4.ARC4Contract):
 
     set_price 메서드는 호출 시 아래 사항들을 만족해야 합니다.
     1. 메서드 호출자가 앱의 생성자인지 체크해야합니다.
-    2. 이 메서드 호출 시 bootstrapped 상태가 True인지 체크해야합니다. 즉 부트스트랩이 된 상태에서만(단기 초기 설정이 완료된 상태) 단가를 변경할 수 있습니다.
+    2. 이 메서드 호출 시 bootstrapped 상태가 True인지 체크해야합니다. 즉 부트스트랩이 된 상태에서만(단가 초기 설정이 완료된 상태) 단가를 변경할 수 있습니다.
 
     set_price 메서드는 아래 기능들을 수행합니다.
-    1. unitary_price 글로벌 상태를 업데이트합니다. 
+    1. unitary_price 글로벌 상태를 전달값 unitary_price로 업데이트합니다. 
 
     힌트 1: https://algorandfoundation.github.io/puya/lg-errors.html#assertions
     힌트 2: https://github.com/algorandfoundation/puya/blob/11843f6bc4bb6e4c56ac53e3980f74df69d07397/examples/auction/contract.py#L32 
@@ -69,7 +69,7 @@ class DigitalMarketplace(arc4.ARC4Contract):
     문제 3
     bootstrap 메서드를 구현하세요.
 
-    bootstrap 메서드는 앱이 판매할 에셋(ASA)을 설정하고, 단가를 설정하고 에셋이 앱 계정이 옵트인 하는 메서드입니다. 
+    bootstrap 메서드는 앱이 판매할 에셋(ASA)을 설정하고, 단가를 설정하고 앱 계정이 판매할 에셋에 옵트인 하는 메서드입니다. 
     즉 앱이 판매할 준비를 하는 메서드입니다.
 
     bootstrap 메서드는 호출 시 아래 사항들을 만족해야 합니다.
@@ -77,11 +77,13 @@ class DigitalMarketplace(arc4.ARC4Contract):
     2. 앱 계정이 판매할 ASA에 옵트인이 안되어 있는 것을 체크해야합니다. 옵트인이 되어있다면 이미 부트스트랩이 된 상태입니다.
     3. mbr_pay가 앱 계정으로 보내진 것을 체크해야합니다. 이는 앱 계정의 미니멈 밸런스를 채우기 위한 payment 트랜잭션입니다.
     4. mbr_pay의 알고 송금량이 앱 계정의 미니멈 밸런스(0.1 알고)와 판매할 ASA에 옵트인하기 위한 미니멈 밸런스(0.1 알고)의 합과 같은지 체크해야합니다.
+        이때 꼭! Global이라는 AVM opcode를 사용해 앱 계정의 미니멈 밸런스와 판매할 ASA에 옵트인하기 위한 미니멈 밸런스를 구하세요!
+    5. mbr_pay의 receiver가 앱 계정 주소와 같은지 체크해야합니다.
     - 팁: Global이라는 AVM opcode를 통해 여러 정보를 열람할 수 있습니다. 자세한 사항은 아래 힌트 1을 참고해주세요.
 
     bootstrap 메서드는 아래 기능들을 수행합니다.
-    1. asset_id 글로벌 상태를 판매할 ASA 아이디로 업데이트합니다.
-    2. unitary_price 글로벌 상태를 판매할 ASA의 단가로 업데이트합니다.
+    1. asset_id 글로벌 상태를 전달값으로 들어온 판매할 ASA의 아이디로 업데이트합니다.
+    2. unitary_price 글로벌 전달값으로 들어온 unitary_price(상태를 판매할 ASA의 단가)로 업데이트합니다.
     3. bootstrapped 글로벌 상태를 True로 변경합니다.
     4. 앱이 판매할 ASA를 보유할 수 있도록 앱 계정으로 판매할 ASA에 옵트인합니다. 이때 앱 계정이 트랜잭션을 보내는 것이기 때문에
        Inner Transaction을 사용해야합니다. 자세한 사항은 힌트 2를 참고해주세요.
@@ -138,7 +140,7 @@ class DigitalMarketplace(arc4.ARC4Contract):
     문제 5 (쪼금 어려움 😝)
     withdraw_and_delete 메서드를 구현하세요.
 
-    withdraw_and_delete 메서드는 앱 계정에 있는 잔여 에셋(ASA)을 앱 계정으로 전송하고, 
+    withdraw_and_delete 메서드는 앱 계정에 있는 잔여 에셋(ASA)을 판매자 계정으로 전송하고, 
     모든 수익금을 판매자 계정으로 송금한 뒤,
     스마트 계약을 삭제하는 메서드입니다.
 

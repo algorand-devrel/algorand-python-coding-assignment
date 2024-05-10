@@ -19,7 +19,7 @@ class PersonalBank(ARC4Contract):
     def opt_in_to_app(self) -> None:
         self.balance[Txn.sender] = UInt64(0)
 
-    @arc4.abimethod()
+    @arc4.abimethod
     def deposit(self, ptxn: gtxn.PaymentTransaction) -> UInt64:
         assert ptxn.amount > 0, "Deposit amount must be greater than 0"
         assert (
