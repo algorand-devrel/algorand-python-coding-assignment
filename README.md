@@ -84,7 +84,7 @@ algokit project deploy localnet
 ```
 
 실행 후 다음과 같은 콘솔 값이 출력되면 성공적으로 모든 문제를 해결하신겁니다! 👏👏
-<img width="1033" alt="image" src="https://github.com/algorand-devrel/orakle-coding-assignment-2024/assets/52557585/7c6b578d-fd59-42e6-a11d-184ed7552cef">
+<img width="831" alt="image" src="https://github.com/algorand-devrel/BAY-coding-assignment-2024/assets/52557585/fc2c7372-c190-4f4f-bcc7-9922171551a2">
 
 ## 체크포인트 4: 💯 과제 제출하는 방법
 
