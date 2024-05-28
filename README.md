@@ -74,6 +74,14 @@ https://github.com/algorand-fix-the-bug-campaign/challenge-1/assets/52557585/acd
 2. `orakle-nft-marketplace-app-contracts/smart_contract/nft_marketplace/contract.ts`로 가시면 문제 1-4가 주석으로 작성되어있습니다.
     설명을 자세히 읽고 문제들을 해결하세요!
 3. 문제를 다 해결한 뒤 터미널에서 `algokit project run build` 커맨드를 실행해 스마트 계약을 컴파일 하시고 `algokit project deploy localnet` 커맨드를 실행해 `smart_contracts/digital_marketplace/deploy-config.ts` 파일을 실행하세요!
+```bash
+algokit project run build
+```
+
+```bash
+algokit project deploy localnet
+```
+
 실행 후 다음과 같은 콘솔 값이 출력되면 성공적으로 모든 문제를 해결하신겁니다! 👏👏
 <img width="1033" alt="image" src="https://github.com/algorand-devrel/orakle-coding-assignment-2024/assets/52557585/7c6b578d-fd59-42e6-a11d-184ed7552cef">
 
