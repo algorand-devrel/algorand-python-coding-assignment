@@ -13,9 +13,9 @@
 
 이번 코딩 세션에서는 다음과 같은 디지털 마켓플레이스 스마트 계약을 [알고랜드 파이썬](https://algorandfoundation.github.io/puya/index.html)을 사용해서 구현해보겠습니다.
 
-DigitalMarketplace 앱 설명
+NftMarketplace 앱 설명
 
-이 간단한 DigitalMarketplace 앱은 에섯(ASA)를 판매할 수 있는 스마트 계약입니다.
+이 간단한 NftMarketplace 앱은 에섯(ASA)를 판매할 수 있는 스마트 계약입니다.
 
 이 앱의 lifecycle은 아래와 같습니다.
 1. 앱 생성자(판매자)가 앱을 생성합니다.
@@ -41,7 +41,7 @@ cd [DIRECTORY_OF_YOUR_CHOICE]
 git clone [FORKED_REPO_URL]
 ```
 3. VSCode에서 이 폴더를 열람해주세요.
-4. 열람 후 `blockchain-valley-session-2.code-workspace` 파일을 열람 후 `open workspace` 버튼을 눌러 workspace 모드를 실행시켜주세요.
+4. 열람 후 `bay-workshop-2024.code-workspace` 파일을 열람 후 `open workspace` 버튼을 눌러 workspace 모드를 실행시켜주세요.
 5. 이제 VSCode 터미널이 3개가 자동 생성될 것 입니다: `ROOT` `blockchain-valley-2` `coding-assignment`.  이 중 `ROOT` VSCode 터미널에서 `algokit project bootstrap all` 커맨드를 실행시켜 dependencies들을 설치해주세요. 이러면 모든 프로젝트 폴더의 dependencies들이 설치됩니다.
 ```bash
 algokit project bootstrap all
@@ -56,14 +56,14 @@ https://github.com/algorand-fix-the-bug-campaign/challenge-1/assets/52557585/acd
 ## 체크포인트 3: 📝 문제를 해결하세요!
 
 1. 도커 데스크탑을 실행한 뒤 터미널에서 `algokit localnet start` 커맨드로 로컬 네트워크를 실행시켜주세요.[더 자세히 알고 싶다면 여기를 클릭해주세요!](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/features/localnet.md#creating--starting-the-localnet).
-2. `smart_contracts/digital_marketplace/contract.py` 파일로 가셔서 설명을 읽으시고 문제들을 해결하세요!
-3. 문제를 다 해결한 뒤 터미널에서 `algokit project run build` 커맨드를 실행해 스마트 계약을 컴파일 하시고 `algokit project deploy localnet` 커맨드를 실행해 `smart_contracts/digital_marketplace/deploy-config.ts` 파일을 실행하세요!
+2. `smart_contracts/nft_marketplace/contract.py` 파일로 가셔서 설명을 읽으시고 문제들을 해결하세요!
+3. 문제를 다 해결한 뒤 터미널에서 `algokit project run build` 커맨드를 실행해 스마트 계약을 컴파일 하시고 `algokit project deploy localnet` 커맨드를 실행해 `smart_contracts/nft_marketplace/deploy-config.ts` 파일을 실행하세요!
 실행 후 다음과 같은 콘솔 값이 출력되면 성공적으로 모든 문제를 해결하신겁니다!
 
 ### 과제를 일찍 끝내버린 그대를 위한 보너스 과제!
 
-1. `smart_contracts/digital_marketplace/deploy-config.ts` 파일 안에 보면 btsScenario 함수가 주석으로 comment out 되어있습니다. 주석을 해제하고 설명에 따라 총 7문제를 해결하세요!
-2. 문제를 다 해결한 뒤 터미널에서 `algokit project deploy localnet` 커맨드를 실행해 `smart_contracts/digital_marketplace/deploy-config.ts` 파일을 실행하세요!
+1. `smart_contracts/nft_marketplace/deploy-config.ts` 파일 안에 보면 btsScenario 함수가 주석으로 comment out 되어있습니다. 주석을 해제하고 설명에 따라 총 7문제를 해결하세요!
+2. 문제를 다 해결한 뒤 터미널에서 `algokit project deploy localnet` 커맨드를 실행해 `smart_contracts/nft_marketplace/deploy-config.ts` 파일을 실행하세요!
 실행 후 다음과 같은 콘솔 값이 출력되면 성공적으로 보너스 과제까지 해결하신겁니다!
 
 ## 체크포인트 4: 💯 과제 제출하는 방법

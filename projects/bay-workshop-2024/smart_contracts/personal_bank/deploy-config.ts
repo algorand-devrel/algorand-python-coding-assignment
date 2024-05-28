@@ -109,6 +109,10 @@ export async function deploy() {
     let localStateCheck = await appClient.getLocalState(user)
     const userBalance = localStateCheck.balance?.asNumber()
     console.log(`${userName}의 로컬 상태: ${Number(userBalance) / 1_000_000} Algos`)
+
+    let globalStateCheck = await appClient.getGlobalState()
+    const depositors = globalStateCheck.depositors?.asNumber()
+    console.log(`총 입금자 수: ${depositors}`)
   }
   await userDepositScript(user1AppClient, 'user1', user, 5)
   await userDepositScript(user2AppClient, 'user2', user2, 8)
@@ -133,6 +137,10 @@ export async function deploy() {
     } catch (e) {
       console.log('User의 로컬 상태: 없음')
     }
+
+    let globalStateCheck = await appClient.getGlobalState()
+    const depositors = globalStateCheck.depositors?.asNumber()
+    console.log(`총 입금자 수: ${depositors}`)
   }
   await userWithdrawScript(user1AppClient, 'user1', user)
   await userWithdrawScript(user2AppClient, 'user2', user2)

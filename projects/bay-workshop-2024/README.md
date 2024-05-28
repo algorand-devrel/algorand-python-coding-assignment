@@ -1,4 +1,4 @@
-# blockchain-valley-session-2
+# bay-workshop-2024
 
 This project has been generated using AlgoKit. See below for default getting started instructions.
 

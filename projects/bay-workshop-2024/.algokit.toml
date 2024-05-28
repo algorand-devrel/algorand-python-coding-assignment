@@ -7,7 +7,7 @@ path = ".algokit/generators/create_contract"
 
 [project]
 type = 'contract'
-name = 'blockchain-valley-session-2'
+name = 'bay-workshop-2024'
 artifacts = 'smart_contracts/artifacts'
 
 [project.deploy]
