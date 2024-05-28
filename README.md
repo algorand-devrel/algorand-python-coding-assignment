@@ -55,6 +55,7 @@ algokit project bootstrap all
 
 6. 이제 `coding-assignment` 터미널을 선택한 뒤 `poetry shell` 커맨드를 실행해 파이썬 virtual environment를 활성화 시켜주세요.
    1. 파이썬 virtual environment를 비활성화 시킬때는 `exit` 커맨드를 실행하시면 됩니다.
+   2. venv를 활성화 한 뒤 `pip list`를 실행해서 `algorand-python` 및 여러 dependencies들이 나오면 성공적으로 가상환경을 활성화 시킨겁니다.
 
 🎉 이제 모든 준비가 되었습니다! Good luck coding! 💻
 
