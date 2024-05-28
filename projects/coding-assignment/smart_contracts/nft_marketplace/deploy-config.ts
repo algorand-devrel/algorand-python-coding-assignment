@@ -147,7 +147,7 @@ export async function deploy() {
     )
 
     const assetInfo = await algorand.account.getAssetInformation(buyer, assetId)
-    console.log(`${buyerName}가 티켓 1장을 추가 구매하여 ${assetInfo.balance}개의 티켓을 보유하고 있어요!`)
+    console.log(`${buyerName}가 티켓 1장을 구매하여 ${assetInfo.balance}개의 티켓을 보유하고 있어요!`)
   }
 
   await buyAsset(buyerAppClient, 'buyer', buyer, assetId, 1, app.appAddress, unitaryPrice)
