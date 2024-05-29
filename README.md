@@ -71,10 +71,10 @@ https://github.com/algorand-fix-the-bug-campaign/challenge-1/assets/52557585/acd
 > 만약 로컬 네트워크 연결이 안되거나 뭔가 문제가 생기면 `algokit localnet reset` 커맨드로 로컬네트워크를 지우고 다시 생성하시면 됩니다.
 
 ### 1-4문제: 스마트계약 문제 진행 설명
-1. `orakle-nft-marketplace-app-contracts` 터미널에서 `poetry shell`를 실행해서 파이썬 가상환경을 켰는지 확인하세요.
-2. `orakle-nft-marketplace-app-contracts/smart_contract/nft_marketplace/contract.ts`로 가시면 문제 1-4가 주석으로 작성되어있습니다.
+1. `coding-assignment` 터미널에서 `poetry shell`를 실행해서 파이썬 가상환경을 켰는지 확인하세요.
+2. `coding-assignment/smart_contract/nft_marketplace/contract.ts`로 가시면 문제 1-4가 주석으로 작성되어있습니다.
     설명을 자세히 읽고 문제들을 해결하세요!
-3. 문제를 다 해결한 뒤 터미널에서 `algokit project run build` 커맨드를 실행해 스마트 계약을 컴파일 하시고 `algokit project deploy localnet` 커맨드를 실행해 `smart_contracts/digital_marketplace/deploy-config.ts` 파일을 실행하세요!
+3. 문제를 다 해결한 뒤 터미널에서 `algokit project run build` 커맨드를 실행해 스마트 계약을 컴파일 하시고 `algokit project deploy localnet` 커맨드를 실행해 `smart_contracts/nft_marketplace/deploy-config.ts` 파일을 실행하세요!
 ```bash
 algokit project run build
 ```
