@@ -1,4 +1,4 @@
-from algopy import *
+from algopy import ARC4Contract, LocalState, UInt64, Txn, Global, itxn, gtxn, arc4
 
 
 class PersonalBank(ARC4Contract):
@@ -9,9 +9,9 @@ class PersonalBank(ARC4Contract):
 
     @arc4.abimethod(allow_actions=["OptIn"])
     def opt_in_to_app(self) -> None:
-        result , exists = self.optedIn.maybe(Txn.sender)
+        result, exists = self.optedIn.maybe(Txn.sender)
         assert not exists, "User already opted in"
-        
+
         self.balance[Txn.sender] = UInt64(0)
         self.optedIn[Txn.sender] = True
         self.depositors += 1
@@ -23,7 +23,9 @@ class PersonalBank(ARC4Contract):
             ptxn.receiver == Global.current_application_address
         ), "Deposit receiver must be the contract address"
         assert ptxn.sender == Txn.sender, "Deposit sender must be the caller"
-        assert Txn.sender.is_opted_in(Global.current_application_id), "Deposit sender must opt-in to the app first."
+        assert Txn.sender.is_opted_in(
+            Global.current_application_id
+        ), "Deposit sender must opt-in to the app first."
 
         self.balance[Txn.sender] += ptxn.amount
         user_balance = self.balance[Txn.sender]
@@ -43,6 +45,6 @@ class PersonalBank(ARC4Contract):
             fee=0,
         ).submit()
 
-        self.depositors -= 1    
+        self.depositors -= 1
 
         return userBalance
