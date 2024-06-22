@@ -1,4 +1,4 @@
-## Decipher 2024 - Algorand Python Coding Challenge
+## Algorand Python Coding Assignment Submission
 
 **Screenshot of your console after running the deploy command**
 

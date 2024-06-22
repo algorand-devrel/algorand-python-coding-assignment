@@ -6,5 +6,4 @@ author_name: iskysun96
 contract_name: nft_marketplace
 deployment_language: typescript
 preset_name: starter
-project_name: python-decipher2024
-
+project_name: algorand-python-coding-assignment

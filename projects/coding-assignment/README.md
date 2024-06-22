@@ -54,7 +54,7 @@ git clone [FORKED_REPO_URL]
 ```
 
 1. Open this project in VSCode
-2. Open the file named `python-decipher2024.code-workspace` and press the `open workspace` button to activate workspace mode.
+2. Open the file named `algorand-python-coding-assignment.code-workspace` and press the `open workspace` button to activate workspace mode.
 3. 3 VSCode terminal will be auto created: `ROOT` `python-demo` `coding-assignment`. Now go to the `ROOT` VSCode terminal and run the following command to install dependencies required for both sub projects:
 
 ```bash

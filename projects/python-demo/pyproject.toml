@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "python-decipher2024"
+name = "algorand-python-coding-assignment"
 version = "0.1.0"
 description = "Algorand smart contracts"
 authors = ["iskysun96 <iskysun96@gmail.com>"]
