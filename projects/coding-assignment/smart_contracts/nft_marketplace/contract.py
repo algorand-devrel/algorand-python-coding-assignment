@@ -2,185 +2,178 @@
 from algopy import *
 
 """
-NftMarketplace 앱 설명
+This simple NftMarketplace app is a smart contract that allows the sale of assets (ASA).
 
-이 간단한 NftMarketplace 앱은 에섯(ASA)를 판매할 수 있는 스마트 계약입니다.
+The lifecycle of this app is as follows:
 
-이 앱의 lifecycle은 아래와 같습니다.
-1. 앱 생성자(판매자)가 앱을 생성합니다.
-2. 앱 생성자(판매자)가 앱을 bootstrap 메서드를 호출해 부트스트랩합니다. 이때 앱은 판매할
-   에셋(ASA)을 설정하고, 단가를 설정하고, 앱 계정이 판매할 에셋에 옵트인을 합니다.
-3. 구매자가 앱에서 판매하는 에셋(ASA)을 buy 메서드를 호출해 구매합니다.
-4. 앱 생성자(판매자)가 withdraw_and_delete 메서드를 호출해 앱 계정에 남아있는
-   에셋(ASA)을 앱 계정으로 전송하고, 모든 수익금을 판매자 계정으로 송금한 뒤,
-   스마트 계약을 삭제합니다.
+The app creator (seller) creates the app.
+The app creator (seller) bootstraps the app by calling the bootstrap method. At this time, 
+the app sets the asset (ASA) to be sold, sets the unit price, and opts the app account into 
+the asset to be sold.
+A buyer purchases the asset (ASA) being sold by calling the buy method.
+The app creator (seller) calls the withdraw_and_delete method to transfer the remaining 
+assets (ASA) in the app account to the seller's account, transfer all proceeds to the seller's 
+account, and then delete the smart contract.
 """
 
 
 class NftMarketplace(arc4.ARC4Contract):
     """
-    문제 1
-    NftMarketplace 앱의 상태(state)를 정의하고 초기값을 설정하세요.
+    Problem 1
+    Define and initialize the state of the NftMarketplace app.
 
-    NftMarketplace 앱은 세개의 상태를 가지고 있습니다.
-    1. asset_id: 판매할 에셋(ASA)의 아이디; UInt64타입을 가진 글로벌 상태(Global State) 초기값은 0으로 설정해주세요.
-    2. unitary_price: 판매할 에셋(ASA)의 가격. UInt64타입을 가진 글로벌 상태(Global State) 초기값은 0으로 설정해주세요.
-    3. bootstrapped: 앱에서 에셋을 판매할 준비가 되었는지 체크하는 bool 타입의 글로벌 상태(Global State). 초기값은 False로 설정해주세요.
-       bootstrap 메서드가 실행되면 True로 변경됩니다.
+    The NftMarketplace app has three states:
 
-    재밌는 팩트!
-    AVM은 Bytes 타입과 UInt64 타입만 지원합니다. 그래서 다른 타입을 사용하고 싶으면 보통 arc4타입을 사용합니다. 하지만
-    Algorand Python에서는 bool, string 타입은 파이썬 코드와 동일하게 사용할 수 있습니다. 예를 들어 bool 타입은 True,
-    False로 표헌하면 되고, string 타입은 "Hello, World!"와 같이 표현하면 됩니다. Algorand Python에서 데이터 타입을
-    사용하는 방법은 아래 링크를 참고해주세요.
-    - arc4 타입: https://algorandfoundation.github.io/puya/lg-types.html#types
+    asset_id: The ID of the asset (ASA) to be sold; a UInt64 type global state with an initial value set to 0.
+    unitary_price: The price of the asset (ASA) to be sold; a UInt64 type global state with an initial value set to 0.
+    bootstrapped: A bool type global state that checks if the app is ready to sell the asset. The initial value is set to False. This changes to True when the bootstrap method is executed.
+    
+    Fun Fact!
+    The Algorand Virtual Machine (AVM) only supports Bytes and UInt64 types. Therefore, if you want to use other types, 
+    you usually use the ARC4 type. However, in Algorand Python, you can use bool and string types as you would in Python code. 
+    For example, the bool type can be expressed as True or False, and the string type can be expressed as "Hello, World!". 
+    For more information on how to use data types in Algorand Python, refer to the link below:
+    - ARC4 types: https://algorandfoundation.github.io/puya/lg-types.html#types
 
-    팁!
-    - Global State를 정의할때 simplifed 버전으로 정의하면 간결한 코드로 상태를 정의하고 초기값을 설정할 수 있습니다. 자세한 사항은 아래 힌트 1을 참고해주세요.
-
-    힌트 1 - 글러벌 상태: https://algorandfoundation.github.io/puya/lg-storage.html#global-storage
-    힌트 2 - 코드 예시: https://github.com/algorandfoundation/puya/blob/11843f6bc4bb6e4c56ac53e3980f74df69d07397/examples/global_state/contract.py#L5
+    Tip!
+    When defining Global State, using a simplified version allows you to define the state and set initial values with concise code. 
+    For more details, refer to Hint 1 below.
+    Hint 1 - Global State: https://algorandfoundation.github.io/puya/lg-storage.html#global-storage
+    Hint 2 - Code Example: https://github.com/algorandfoundation/puya/blob/11843f6bc4bb6e4c56ac53e3980f74df69d07397/examples/global_state/contract.py#L5
     """
 
     def __init__(self) -> None:
-        "문제 1 시작"
-        self.asset_id = "여기에 코드 작성"
-        self.unitary_price = "여기에 코드 작성"
-        self.bootstrapped = "여기에 코드 작성"
-        "문제 1 끝"
+        "Problem 1 Start"
+        self.asset_id = "Write code here"
+        self.unitary_price = "Write code here"
+        self.bootstrapped = "Write code here"
+        "Problem 1 End"
 
     """
-    문제 2
-    bootstrap 메서드를 구현하세요.
+    Problem 2
+    Implement the bootstrap method.
 
-    bootstrap 메서드는 앱이 판매할 에셋(ASA)을 설정하고, 단가를 설정하고 앱 계정이 판매할 에셋에 옵트인 하는 메서드입니다.
-    즉 앱이 판매할 준비를 하는 메서드입니다.
+    The bootstrap method sets the asset (ASA) to be sold, sets the unit price, and opts the app account into the asset to be sold. 
+    In other words, this method prepares the app for selling.
 
-    함수 인수 설명:
-    - asset: 판매할 에셋(ASA)의 정보를 담고 있는 Asset 타입의 인수입니다.
-    - unitary_price: 판매할 에셋(ASA)의 단가를 나타내는 UInt64 타입의 인수입니다.
-    - mbr_pay: 앱 계정으로 어토믹 그룹에 묶여 동시다발적으로 보내지는 payment 트랜잭션입니다. 이 트랜잭션은 앱 배포자가 앱 계정의 미니멈 밸런스를 채우기 위한 트랜잭션입니다.
-
-    # 1단계: assert로 bootstrap 호출 조건을 체크하세요.
-    - 메서드 호출자 (Txn.sender)가 앱의 생성자(Global.creator_address)인지 체크하세요.
-    - bootstrapped 글ㄹ로벌 상태가 False인지 체크하세요.
-    - mbr_pay 트랜잭션을 받는 계정이 앱 계정인지 체크하세요.
-    - mbr_pay의 알고 송금량(amount)이 앱 계정의 미니멈 밸런스(0.1 알고)와 판매할 ASA에 옵트인하기
-       위한 미니멈 밸런스(0.1 알고)의 합과 같은지 체크해야합니다.
-        -> 팁: Global이라는 AVM opcode를 통해 min_balance, asset_opt_in_min_balance와 같은 여러 정보를 열람할 수 있습니다. 자세한 사항은 아래 힌트 1을 참고해주세요.
-
-    # 2단계: bootstrap 메서드는 아래 기능들을 수행합니다.
-    1. asset_id 글로벌 상태를 인수로 들어온 판매할 ASA 아이디로 업데이트합니다.
-    2. unitary_price 글로벌 상태를 인수로 들어온 판매할 ASA의 단가로 업데이트합니다.
-    3. bootstrapped 글로벌 상태를 True로 변경합니다.
-    4. 앱이 판매할 ASA를 보유할 수 있도록 앱 계정으로 판매할 ASA에 옵트인합니다. 이때 앱 계정이
-       트랜잭션을 보내는 것이기 때문에 Inner Transaction을 사용해야합니다. 자세한 사항은 힌트
-       2를 참고해주세요. 에셋에 옵트인하는 방법은 assetTransfer를 보낼때 0개의 에셋을 본인 계정으로
-       보내면 됩니다. 즉, 여기서는 앱 계정이 자기 자신에게 0개의 에셋을 보내면 됩니다.
-       -> 힌트3에 나와있는 AssetTransfer 인수들 중 필수로 설정해야하는것들은 xfer_asset(보낼 에셋의 아이디), asset_receiver(받는 계정), asset_amount(에섯 송금량)입니다.
-
-    힌트 1 - Global Opcode: https://algorandfoundation.github.io/puya/api-algopy.html#algopy.Global
-    힌트 2 - How to Inner Transaction: https://algorandfoundation.github.io/puya/lg-transactions.html#inner-transactions
-    힌트 3 - Asset Transfer Inner Txn: https://algorandfoundation.github.io/puya/api-algopy.itxn.html#algopy.itxn.AssetTransfer
-    힌트 4 - itxn asset transfer 코드 예시: https://github.com/algorandfoundation/puya/blob/2acea25a96c0acd818e9410007d473b2a82e754d/examples/amm/contract.py#L357
+    Function Arguments Explained:
+    - asset: An argument of type Asset that contains information about the asset (ASA) to be sold.
+    - unitary_price: An argument of type UInt64 that represents the unit price of the asset (ASA) to be sold.
+    - mbr_pay: A payment transaction that is atomically grouped and sent simultaneously to the app account. This transaction ensures the app's minimum balance is met.
+    
+    Step 1: Check bootstrap call conditions with assert
+    - Verify that the method caller (Txn.sender) is the app creator (Global.creator_address).
+    - Verify that the bootstrapped global state is False.
+    - Verify that the receiver of the mbr_pay transaction is the app account.
+    - Verify that the amount of mbr_pay equals the sum of the minimum balance for the app account (0.1 ALGO) and the minimum balance required to opt into the asset (0.1 ALGO).
+    
+    Step 2: Implement following bootstrap operations
+    - Update the `asset_id` global state with the asset ID of the ASA to be sold.
+    - Update the `unitary_price` global state with the unit price of the ASA to be sold.
+    - Set the `bootstrapped` global state to True.
+    - Opt the app account into the asset to be sold using an inner transaction.
+      Since the transaction is being sent by the app account, you need to use an Inner Transaction. For more details, refer to Hint 2. 
+      To opt into an asset, you need to send a special assetTransfer transaction where you send 0 units of the asset to your own account. 
+      In other words, implement an inner txn where the app account sends 0 units of the asset to itself.
+      -> Among the arguments for AssetTransfer, the mandatory fields to set are xfer_asset (the ID of the asset to transfer), asset_receiver (the receiving account), and asset_amount (the amount of the asset to transfer).
+    
+    Hint 1 - Global Opcode: https://algorandfoundation.github.io/puya/api-algopy.html#algopy.Global
+    Hint 2 - How to Inner Transaction: https://algorandfoundation.github.io/puya/lg-transactions.html#inner-transactions
+    Hint 3 - Asset Transfer Inner Txn: https://algorandfoundation.github.io/puya/api-algopy.itxn.html#algopy.itxn.AssetTransfer
+    Hint 4 - itxn asset transfer code example: https://github.com/algorandfoundation/puya/blob/2acea25a96c0acd818e9410007d473b2a82e754d/examples/amm/contract.py#L357
     """
 
-    "문제 2 시작"
+    "Problem 2 Start"
 
     @arc4.abimethod
     def bootstrap(
         self, asset: Asset, unitary_price: UInt64, mbr_pay: gtxn.PaymentTransaction
     ) -> None:
-        "여기에 코드 작성"
+        "Write code here"
 
-    "문제 2 끝"
+    "Problem 2 End"
 
     """
-    문제 3
-    buy 메서드를 구현하세요.
+    Problem 3
+    Implement the buy method.
 
-    buy 메서드는 앱에서 판매하는 에셋(ASA)을 구매할때 구매자가 호출하는 메서드입니다. 
-    구매자는 돈을 보내고 스마트 계약은 구매자에게 에셋(ASA)을 전송합니다.
+    The buy method is called by a buyer to purchase assets (ASA) from the app. The buyer sends money, and the smart contract transfers 
+    the asset (ASA) to the buyer.
 
-    함수 인수 설명:
-    - buyer_txn: 앱 계정으로 어토믹 그룹에 묶여 동시다발적으로 보내지는 payment 트랜잭션입니다. 에섯 구매를 위해 구매자가 Algo를 보내는 Payment transaction입니다.
-    - quantity: 에셋(ASA)을 몇개 구매할건지 나타내는 UInt64 타입의 인수입니다.
+    Method Arguments Explained:
+    - buyer_txn: A payment transaction that is atomically grouped and sent simultaneously to the app account. This transaction is sent by 
+                 the buyer to send Algos for purchasing the asset.
+    - quantity: An argument of type UInt64 that represents the number of assets (ASA) the buyer wants to purchase.
+    
+    Implementation Steps:
+    Step 1: Check buy method call conditions with assert
+    - Verify that the `bootstrapped` global state is True. If False, the app is not bootstrapped.
+    - Verify that the sender of buyer_txn is the same as Txn.sender. This ensures that the account calling the buy method is the same as the account sending the payment transaction.
+    - Verify that the receiver of buyer_txn is the app account address. This ensures that the account calling the buy method is paying the app account and not a different account.
+    - Verify that the amount in buyer_txn equals the unitary_price multiplied by quantity. This ensures that the buyer is paying the correct amount.
+    
+    Step 2: Implement following buy method operations
+    - Transfer the asset (ASA) to the buyer. The quantity of the asset to transfer is the value of the quantity argument. 
+      This transaction is be sent by the app account, so use an Inner Transaction.
 
-    # 1단계: assert로 buy 호출 조건을 체크하세요.
-    - bootstrapped 글로벌 상태가 True인지 체크하세요. False라면 부트스트랩이 안된 상태입니다.
-    - buyer_txn의 sender가 Txn.sender와 같은지 체크해야합니다.
-       즉 buy 메서드를 호출한 계정과 payment 트랜잭션을 보낸 계정이 동일한지 체크합니다.
-    - buyer_txn의 receiver가 앱 계정 주소와 같은지 체크해야합니다.
-       즉 buy 메서드를 호출한 계정이 앱 계정에게 돈을 지불하는지 체크합니다.
-    - buyer_txn의 amount가 unitary_price(단가) 곱하기 quantity(수량)과 같은지 체크해야합니다.
-       즉 구매자가 지불한 금액이 정확한지 체크합니다.
-
-    # 2단계: buy 메서드는 아래 기능들을 수행합니다.
-    1. 구매자에게 에셋(ASA)을 전송합니다. 이때 에셋의 수량은 quantity 전달값만큼 보냅니다.
-       이 또한 앱계정이 보내는 트랜잭션이니 Inner Transaction을 사용하세요!
-
-    힌트 1 - Inner Transaction: https://algorandfoundation.github.io/puya/lg-transactions.html#inner-transactions
-    힌트 2 - Asset Transfer Inner Txn: https://algorandfoundation.github.io/puya/api-algopy.itxn.html#algopy.itxn.AssetTransfer
-    힌트 3 - itxn asset transfer 코드 예시: https://github.com/algorandfoundation/puya/blob/2acea25a96c0acd818e9410007d473b2a82e754d/examples/amm/contract.py#L357
+    Hint 1 - Inner Transaction: https://algorandfoundation.github.io/puya/lg-transactions.html#inner-transactions
+    Hint 2 - Asset Transfer Inner Txn: https://algorandfoundation.github.io/puya/api-algopy.itxn.html#algopy.itxn.AssetTransfer
+    Hint 3 - itxn asset transfer code example: https://github.com/algorandfoundation/puya/blob/2acea25a96c0acd818e9410007d473b2a82e754d/examples/amm/contract.py#L357
     """
-    "문제 3 시작"
 
+    "Problem 3 Start"
     @arc4.abimethod
     def buy(
         self,
         buyer_txn: gtxn.PaymentTransaction,
         quantity: UInt64,
     ) -> None:
-        "여기에 코드 작성"
-
-    "문제 3 끝"
-
-    """
-    문제 4
-    withdraw_and_delete 메서드를 구현하세요.
-
-    withdraw_and_delete 메서드는 앱 계정에 있는 잔여 에셋(ASA)을 앱 계정으로 전송하고,
-    모든 수익금을 판매자 계정으로 송금한 뒤,
-    스마트 계약을 삭제하는 메서드입니다.
-
-    withdraw_and_delete 메서드는 OnComplete Action이 DeleteApplication인 메서드입니다.
-    즉, 이 메서드가 실행되고 난 후 스마트 계약이 삭제되게 됩니다. 그래서 decorator에 allow_actions=["DeleteApplication"]로 
-    설정이 된 것입니다.
-
-    힌트 - Decorator: https://algorandfoundation.github.io/puya/lg-arc4.html#:~:text=%40arc4.abimethod(create%3DFalse%2C%20allow_actions%3D%5B%22NoOp%22%2C%20%22OptIn%22%5D%2C%20name%3D%22external_name%22)
-
-    # 1단계: assert로 withdraw_and_delete 호출 조건을 체크하세요.
-    - 메서드 호출자(Txn.sender)가 앱의 생성자(Global.creator_address)인지 체크해야합니다.
-
-    # 2단계: withdraw_and_delete 메서드는 아래 기능들을 수행합니다.
-    1. 앱 계정에 있는 에셋(ASA)을 앱 계정으로 전송합니다. (AssetTransfer Transaction)
-       이때 asset_close_to 패러미터를 앱 생성자(판매자)로 설정하여
-       앱 계정에 남아있는 에섯 전부를 앱 생성자(판매자)에게 보냅니다.
-       에셋의 수량과 무관하게 전 수량 송금되기 때문에 에셋 수량(asset_amount)은 설정하지 않으셔도 됩니다.
-    -> 설정해야할 설정값
-        - xfer_asset: 앱 계정에 있는 에셋(ASA)의 아이디
-        - asset_receiver: 에셋 송금을 받을 주소
-        - asset_close_to: 전 수량이 송금될 주소
-
-    2. 앱 계정에 있는 모든 수익금을 앱 생성자(판매자) 계정으로 송금합니다. (Payment Transaction)
-       이때 close_remainder_to 패러미터를 앱 생성자(판매자)로 설정하여 알고 전액(미니멈 밸런스 포함)을 앱
-       생성자(판매자)에게 보냅니다. close_remainder_to가 설정되어있기 때문에 amount를 설정하지 않으셔도 
-       알고 전액이 송금됩니다.
-    -> 설정해야할 설정값
-        - receiver: 알고 송금을 받을 주소
-        - close_remainder_to: 알고 전액이 송금될 주소
-
-    이때 두 트랜잭션 다 앱 계정이 보내는 트랜잭션이기 때문에 Inner Transaction을 사용하세요!
-
-    힌트 1 - Inner Transaction: https://algorandfoundation.github.io/puya/lg-transactions.html#inner-transactions
-    힌트 2 - itxn asset transfer 코드 예시: https://github.com/algorandfoundation/puya/blob/2acea25a96c0acd818e9410007d473b2a82e754d/examples/amm/contract.py#L357
+        "Write code here"
+    "Problem 3 End"
 
     """
+    Problem 4
+    Implement the withdraw_and_delete method.
 
-    "문제 4 시작"
+    The withdraw_and_delete method transfers remaining assets (ASA) in the app account to the creator account, 
+    sends all proceeds to the seller's account, and deletes the smart contract.
+
+    The withdraw_and_delete method has an OnComplete action of DeleteApplication. This means that after this method is executed, 
+    the smart contract will be deleted. Therefore, the decorator is set with allow_actions=["DeleteApplication"].
+
+    Hint - Decorator: https://algorandfoundation.github.io/puya/lg-arc4.html#:~:text=%40arc4.abimethod(create%3DFalse%2C%20allow_actions%3D%5B%22NoOp%22%2C%20%22OptIn%22%5D%2C%20name%3D%22external_name%22)
+
+    Implementation Steps:
+    Step 1: Check conditions for calling withdraw_and_delete using assert
+    - Verify that the method caller (Txn.sender) is the app creator (Global.creator_address).
+    
+    Step 2: Implement the following withdraw_and_delete method operations:
+    1. Transfer all assets (ASA) from the app account to the creator account. (AssetTransfer Transaction)
+       Set the asset_close_to parameter to the creator (seller) to transfer all remaining ASA from the app account to the creator (seller).
+       Since all remaining assets are transferred regardless of quantity, you do not need to specify the asset quantity (asset_amount).
+    -> parameters to be configured:
+    - xfer_asset: ID of the ASA in the app account
+    - asset_receiver: Address to receive the asset transfer
+    - asset_close_to: Address where the entire amount is transferred
+
+    2. Transfer all proceeds from the app account to the creator (seller) account. (Payment Transaction)
+       Set the close_remainder_to parameter to the creator (seller) to send the entire balance (including the minimum balance) 
+       to the creator (seller). Since close_remainder_to is configured, you do not need to set the amount because the entire balance 
+       will be transferred.
+    -> parameters to be configured:
+    - receiver: Address to receive the Algos
+    - close_remainder_to: Address where the entire balance is transferred
+
+    Both transactions are initiated by the app account, so use Inner Transactions!
+
+    Hint 1 - Inner Transaction: https://algorandfoundation.github.io/puya/lg-transactions.html#inner-transactions
+    Hint 2 - itxn asset transfer code example: https://github.com/algorandfoundation/puya/blob/2acea25a96c0acd818e9410007d473b2a82e754d/examples/amm/contract.py#L357
+    """
+
+    "Problem 4 Start"
 
     @arc4.abimethod(allow_actions=["DeleteApplication"])
     def withdraw_and_delete(self) -> None:
-        "여기에 코드 작성"
+        "Write code here"
 
-    "문제 4 끝"
+    "Problem 4 End"

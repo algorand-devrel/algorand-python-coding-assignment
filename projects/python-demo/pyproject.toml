@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "bay-workshop-2024"
+name = "python-decipher2024"
 version = "0.1.0"
 description = "Algorand smart contracts"
 authors = ["iskysun96 <iskysun96@gmail.com>"]

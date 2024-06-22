@@ -7,7 +7,7 @@ path = ".algokit/generators/create_contract"
 
 [project]
 type = 'contract'
-name = 'bay-workshop-2024'
+name = 'python-decipher2024'
 artifacts = 'smart_contracts/artifacts'
 
 [project.deploy]
