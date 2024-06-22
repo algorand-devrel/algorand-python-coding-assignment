@@ -8,13 +8,13 @@ export async function deploy() {
   console.log('=== Deploying NftMarketplaceClient ===')
   AlgokitConfig.configure({ populateAppCallResources: true })
 
-  // 여러 클라이언트 생성
+  // Instantiate clients
   const algod = algokit.getAlgoClient()
   const indexer = algokit.getAlgoIndexerClient()
   const algorand = algokit.AlgorandClient.defaultLocalNet()
   algorand.setDefaultValidityWindow(1000)
 
-  // 랜덤 계정 생성 후 자금 지급
+  // Create and fund random accounts for testing
   const deployer = await algorand.account.random()
   const buyer = await algorand.account.random()
   const accounts = [deployer, buyer]
@@ -31,7 +31,7 @@ export async function deploy() {
     )
   }
 
-  // NftMarketplace 앱 클라이언트 생성
+  // Create NftMarketplace app client
   const appClient = new NftMarketplaceClient(
     {
       resolveBy: 'creatorAndName',
@@ -42,7 +42,7 @@ export async function deploy() {
     algod,
   )
 
-  // 판매할 아이유님 콘서트 티켓 에셋 생성 (아이유 짱❤️)
+  // Create Taylor Swift concert ticket ASA that will be sold.
   const createResult = await algorand.send.assetCreate(
     {
       sender: deployer.addr,
@@ -53,15 +53,15 @@ export async function deploy() {
     { suppressLog: true },
   )
 
-  // 생성된 에셋 ID를 저장
+  // Save created asset ID
   const assetId = BigInt(createResult.confirmation.assetIndex!)
-  console.log(`1. IU Concert Ticket 에셋 생성 완료! 에셋 아이디: ${assetId}`)
+  console.log(`1. Taylor Swift concert ticket ASA created!  Asset Id: ${assetId}`)
 
-  // NftMarketplaceClient 앱 배포
+  //Deploy NftMarketplaceClient app
   let unitaryPrice: number = 1 * 1_000_000
   const app = await appClient.create.bare()
 
-  // NftMarketplaceClient 앱에 미니멈 밸런스 지급
+  // Fund NftMarketplaceClient to cover minimum balance
   const mbrPay = await algorand.transactions.payment({
     sender: deployer.addr,
     receiver: app.appAddress,
@@ -76,7 +76,7 @@ export async function deploy() {
     amount: 100n,
   }
 
-  // 앱이 판매할 준비가 되도록 Bootstrap 메서드를 호출, NftMarketplaceClient 앱에 판매할 NFT 에셋 송금
+  // Call the bootstrap method and then send the Taylor Swift concert ticket ASA to the app.
   await algorand
     .newGroup()
     .addMethodCall({
@@ -88,10 +88,10 @@ export async function deploy() {
     .addAssetTransfer(sendAssetToSell)
     .execute()
 
-  console.log('2. 앱 부트스트래핑 완료!')
-  console.log('3. IU 티켓 에셋 앱으로 송금 완료!')
+  console.log('2. App bootstrapped!')
+  console.log('3. Taylor Swift concert ticket transferred to app!')
 
-  // 구매자 앱 클라이언트 생성. 이 앱 클라이언트는 구매자 계정과 연동됨.
+  // Instantiate buyer app client. This app client is connected to the buyer's account.
   const buyerAppClient = new NftMarketplaceClient(
     {
       resolveBy: 'id',
@@ -101,7 +101,7 @@ export async function deploy() {
     algod,
   )
 
-  // 구매자가 에섯에 옵트인하고 buy 메서드를 호출하는 함수
+  // A function where the buyer opts in to the concert ticket and calls the buy method to buy the ticket.
   async function buyAsset(
     appClient: NftMarketplaceClient,
     buyerName: string,
@@ -111,7 +111,7 @@ export async function deploy() {
     appAddr: string,
     unitaryPrice: number,
   ): Promise<void> {
-    // NftMarketplaceClient buy 메서드 호출때 구매 비용 지불로 사용할 결제 트랜잭션 생성
+    // Create a payment transaction object for paying the NftMarketplace app to purchase the concert ticket
     const buyNftPay = await algorand.transactions.payment({
       sender: buyer.addr,
       receiver: appAddr,
@@ -120,11 +120,11 @@ export async function deploy() {
 
     try {
       let assetInfo = await algorand.account.getAssetInformation(buyer, assetId)
-      console.log(`${buyerName}가 이미 에셋에 옵트인 되어있어요! 현재 보유한 티켓 수: ${assetInfo.balance}개`)
+      console.log(`${buyerName}is already opted in to the ASA! # of purchased tickets: ${assetInfo.balance}개`)
     } catch (e) {
-      console.log(`${buyerName}가 에셋에 옵트인이 안 되어있어요. 옵트인 진행할게요~`)
+      console.log(`${buyerName}is not opted in to the ASA! Opting into the ASA...`)
 
-      // buy메서드 앱 호출 트랜잭션 생성
+      // Create buy method call transaction object
       const buyAppCall = await appClient
         .compose()
         .buy(
@@ -136,7 +136,7 @@ export async function deploy() {
         )
         .atc()
 
-      // 구매자가 NFT에 옵트인, buyNftPay 결제 트랜잭션, NftMarketplaceClient buy 메서드를 어토믹 트랜잭션으로 동시에 호출
+      // The buyer atomicatlly opts in to the ASA, calls the buy method, and sends the buyNftPay payment transaction.
       await algorand
         .newGroup()
         .addAssetOptIn({
@@ -147,11 +147,13 @@ export async function deploy() {
         .execute()
 
       const assetInfo = await algorand.account.getAssetInformation(buyer, assetId)
-      console.log(`${buyerName}가 티켓 ${buyAmount}장을 구매하여 ${assetInfo.balance}개의 티켓을 보유하고 있어요!`)
+      console.log(
+        `${buyerName} purchased ${buyAmount} concert tickets and now holding ${assetInfo.balance} tickets in total!`,
+      )
       return
     }
 
-    // 계정이 이미 구매할 에셋(아이유 콘서트 티켓)에 옵트인 되어 있을 시 buy 메서드만 호출
+    // If the buyer is already opted in to the ASA, just call the buy method.
     await appClient.buy(
       {
         buyerTxn: buyNftPay,
@@ -161,16 +163,18 @@ export async function deploy() {
     )
 
     const assetInfo = await algorand.account.getAssetInformation(buyer, assetId)
-    console.log(`${buyerName}가 티켓 ${buyAmount}장을 구매하여 ${assetInfo.balance}개의 티켓을 보유하고 있어요!`)
+    console.log(
+      `${buyerName} purchased ${buyAmount} concert tickets and now holding ${assetInfo.balance} tickets in total!`,
+    )
   }
 
   await buyAsset(buyerAppClient, 'buyer', buyer, assetId, 1, app.appAddress, unitaryPrice)
   await buyAsset(buyerAppClient, 'buyer', buyer, assetId, 2, app.appAddress, unitaryPrice)
 
-  // 판매자가 NftMarketplaceClient 앱을 삭제하며 수익금과 잔여 NFT 에셋을 회수
+  // The seller withdraw and delete the app.
   await appClient.delete.withdrawAndDelete(
     {},
     { sendParams: { fee: algokit.transactionFees(3), populateAppCallResources: true } },
   )
-  console.log('4. IU 티켓 판매 종료 및 수익금 회수 완료!')
+  console.log('4. Taylor Swift concert ticket sale ends & all proceeds are withdrawn!')
 }

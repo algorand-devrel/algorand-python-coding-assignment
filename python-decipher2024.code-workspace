@@ -18,6 +18,10 @@
     "jest.disabledWorkspaceFolders": [
       "ROOT",
       "projects"
+    ],
+    "cSpell.words": [
+      "algokit",
+      "Algorand"
     ]
   },
   "extensions": {

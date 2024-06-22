@@ -1,86 +1,117 @@
-# 🎓 연세대 BAY X 알고랜드 개발자 세션 05/30/24
+# 🎓 Become an Algorand Python developer!
 
-## 🚩 파이썬으로 알고랜드에서 NFT 마켓플레이스를 만들어 보자!
+## 🚩 Let's build an NFT marketplace with Algorand Python!
 
-연세대 BAY X 알고랜드 개발자 세션에 오신 베이 학회원분들 반갑습니다~!
+Welcome to your first step to become a master in Algorand Python!
 
-알고랜드 개발자 기초개념 및 스마트 계약에 관한 모든 것 👉 [PPT 슬라이드](https://docs.google.com/presentation/d/1I-lxxAkNIRoR9VdDX-wRD68hHuxBvI1uPY-VQlmrgiI/edit?usp=sharing)
+In this AlgoKit workspace, there are 2 sub projects:
 
-이번 코딩 세션에서는 다음과 같은 NFT 마켓플레이스 스마트 계약을 [알고랜드 파이썬](https://algorandfoundation.github.io/puya/index.html)을 사용해서 구현해보겠습니다.
+- `python-demo`
+- `coding-assignment`
 
-NftMarketplace 앱 설명
+You can see a fully implemented personal bank smart contract written in Algorand Python in the `python-demo` project folder.
 
-이 간단한 NftMarketplace 앱은 에섯(ASA)를 판매할 수 있는 스마트 계약입니다.
+In the `coding-assignment` project folder, we will implement an NFT marketplace smart contract with [Algorand Python](https://algorandfoundation.github.io/puya/index.html)
 
-이 앱의 lifecycle은 아래와 같습니다.
+NftMarketplace smart contract explained:
 
-1. 앱 생성자(판매자)가 앱을 생성합니다.
-2. 앱 생성자(판매자)가 앱을 부트스트랩 메서드를 호출해 부트스트랩합니다. 이때 앱은 판매할 에셋(ASA)을 설정하고, 단가를 설정하고, 앱 계정이 옵트인을 합니다.
-3. 구매자가 앱에서 판매하는 에셋(ASA)을 buy메서드를 호출해 구매합니다.
-4. 앱 생성자(판매자)가 withdraw_and_delete 메서드를 호출해 앱 계정에 남아있는 에셋(ASA)을 앱 계정으로 전송하고, 모든 수익금을 판매자 계정으로 송금한 뒤, 스마트 계약을 삭제합니다.
+This simple NftMarketplace smart contract let's sellers to list NFTs for sale and let's buyers to buy the NFT.
 
-코딩 과제는 총 4문제로 구성되어 있으며 각 문제에 "**_ 여기에 코드 작성 _**" 부분에 코드를 작성하시면 됩니다. 밑에 체크포인트을 차례대로 따라서 진행해주세요!
+lifecycle of this app:
 
-### 개발자 리소스:
+1. The seller deploys the smart contract.
+2. The seller calls the bootstrap method to set the asset ID for sale, unitary price, and opt the contract into the ASA.
+3. The buyer calls the buy method to buy the ASA.
+4. The seller calls the withdraw_and_delete method to withdraw remaining ASA, profits, and then delete the smart contract.
 
-- [알고랜드 개발자 문서](https://developer.algorand.org/docs/)
-- [알고랜드 디스코드(디버깅, 코드 관련 질의응답)](https://discord.com/invite/algorand)
-- [알고랜드 파이썬 개발자 문서](https://algorandfoundation.github.io/puya/)
-- [알고랜드 파이썬 깃헙(예시 코드, 소스코드)](https://github.com/algorandfoundation/puya)
+The coding assignment consist of 4 questions and for each question you can implement your code where it says `Write code here`
+
+> Please carefully read and follow the checkpoints below to properly complete the coding assignment!
+
+### Developer Resources:
+
+- [Algorand Developer Documentation](https://developer.algorand.org/docs/)
+- [Algorand Discord (Get tech support, debugging support here)](https://discord.com/invite/algorand)
+- [Algorand Python Documentation](https://algorandfoundation.github.io/puya/)
+- [Algorand Python Github Repo (Example code, source code)](https://github.com/algorandfoundation/puya)
 - [Algokit Utils TypeScript](https://github.com/algorandfoundation/algokit-utils-ts/tree/main)
 
-## 체크포인트 1: 🧰 알고랜드 개발에 필요한 툴킷 설치
+## Checkpoint 1: 🧰 Install prerequisites
 
-1. [AlgoKit 설치](https://github.com/algorandfoundation/algokit-cli/tree/main?tab=readme-ov-file#install).
-2. [Docker 설치](https://www.docker.com/products/docker-desktop/). It is used to run a local Algorand network for development.
-3. [Python 3.12 이상 설치](https://www.python.org/downloads/)
-4. [Node.JS / npm 설치](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+1. [Install Docker](https://www.docker.com/products/docker-desktop/). It is used to run a local Algorand network for development.
+2. [Install Python 3.12+](https://www.python.org/downloads/)
+3. [Install Node.JS / npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+4. [Install AlgoKit](https://github.com/algorandfoundation/algokit-cli/tree/main?tab=readme-ov-file#install).
 
-## 체크포인트 2: 💻 개발 환경 셋업
+## Checkpoint 2: 💻 Development environment setup
 
-1. [이 리포를 fork 해주세요.](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)
-2. Fork한 리포를 git clone 해주세요.
+1. [Fork this repository.](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)
+2. `git clone` the forked repo.
 
 ```bash
 cd [DIRECTORY_OF_YOUR_CHOICE]
 git clone [FORKED_REPO_URL]
 ```
 
-3. VSCode에서 이 폴더를 열람해주세요.
-4. 열람 후 `python-decipher2024.code-workspace` 파일을 열람 후 `open workspace` 버튼을 눌러 workspace 모드를 실행시켜주세요.
-5. 이제 VSCode 터미널이 3개가 자동 생성될 것 입니다: `ROOT` `python-decipher2024` `coding-assignment`. 이 중 `ROOT` VSCode 터미널에서 `algokit project bootstrap all` 커맨드를 실행시켜 dependencies들을 설치해주세요. 이러면 모든 프로젝트 폴더의 dependencies들이 설치됩니다.
-   > 만약 3개의 터미널의 자동으로 열리지 않으면 새로운 터미널을 + 버튼을 눌러 만들고 `ROOT`를 선택하시면 됩니다.
+1. Open this project in VSCode
+2. Open the file named `python-decipher2024.code-workspace` and press the `open workspace` button to activate workspace mode.
+3. 3 VSCode terminal will be auto created: `ROOT` `python-demo` `coding-assignment`. Now go to the `ROOT` VSCode terminal and run the following command to install dependencies required for both sub projects:
 
 ```bash
 algokit project bootstrap all
 ```
 
-> 만약 `Unhandled PermissionError: [Errno 13] Permission denied: '/Users/$name/.config/algokit'` 에러가 뜬다면 앞에 sudo를 붙여서 `sudo algokit project bootstrap all` 커맨드를 실행하세요!
+> If the 3 terminals don't open automatically, Press the `+` button and select `ROOT` in VSCode.
 
-6. 이제 `coding-assignment` 터미널을 선택한 뒤 `poetry shell` 커맨드를 실행해 파이썬 virtual environment를 활성화 시켜주세요.
-   1. 파이썬 virtual environment를 비활성화 시킬때는 `exit` 커맨드를 실행하시면 됩니다.
-   2. venv를 활성화 한 뒤 `pip list`를 실행해서 `algorand-python` 및 여러 dependencies들이 나오면 성공적으로 가상환경을 활성화 시킨겁니다.
+> If you get `Unhandled PermissionError: [Errno 13] Permission denied: '/Users/$name/.config/algokit'` error, add `sudo` in the front and run the following command:
 
-🎉 이제 모든 준비가 되었습니다! Good luck coding! 💻
+```bash
+sudo algokit project bootstrap all
+```
 
-리포 fork, clone 튜토리얼:
+1. Now go to the `coding-assignment` terminal and run the following command to activate the Python virtual environment:
+
+```bash
+poetry shell
+```
+
+- To deactivate the Python virtual environment, run `exit` in the terminal.
+- After activating the venv, run the following command and if you see various dependencies including `algorand-python`, you successfully activate the virtual environment!
+
+```bash
+pip list
+```
+
+🎉 Now you are ready to crack this assignment! Good luck coding! 💻
+
+Tutorial for forking and cloning this repository:
 https://github.com/algorand-fix-the-bug-campaign/challenge-1/assets/52557585/acde8053-a8dd-4f53-8bad-45de1068bfda
 
-## 체크포인트 3: 📝 문제를 해결하세요!
+## Checkpoint 3: 📝 Solve the problems!
 
-이 코딩 과제는 **총 4문제**로 구성되어 있습니다. 아래 설명을 차례대로 읽고 진행해주세요!
+This coding assignment consist of **4 problems** in total. Follow the instructions below!
 
-### 로컬 네트워크 실행
+### Launch localnet
 
-1. 도커 데스크탑을 실행한 뒤 터미널에서 `algokit localnet start` 커맨드로 로컬 네트워크를 실행시켜주세요.[더 자세히 알고 싶다면 여기를 클릭해주세요!](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/features/localnet.md#creating--starting-the-localnet). 오늘 모든 코드는 로컬 네트워크에서 실행됩니다.
-   > 만약 로컬 네트워크 연결이 안되거나 뭔가 문제가 생기면 `algokit localnet reset` 커맨드로 로컬네트워크를 지우고 다시 생성하시면 됩니다.
+1. **_Open Docker Desktop first_** and then run the following command in your terminal to launch the local network. [Click me for more information of localnet!](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/features/localnet.md#creating--starting-the-localnet)
 
-### 1-4문제: 스마트계약 문제 진행 설명
+```bash
+algokit localnet start
+```
 
-1. `coding-assignment` 터미널에서 `poetry shell`를 실행해서 파이썬 가상환경을 켰는지 확인하세요.
-2. `coding-assignment/smart_contract/nft_marketplace/contract.ts`로 가시면 문제 1-4가 주석으로 작성되어있습니다.
-   설명을 자세히 읽고 문제들을 해결하세요!
-3. 문제를 다 해결한 뒤 터미널에서 `algokit project run build` 커맨드를 실행해 스마트 계약을 컴파일 하시고 `algokit project deploy localnet` 커맨드를 실행해 `smart_contracts/nft_marketplace/deploy-config.ts` 파일을 실행하세요!
+All code in this repo will be run in localnet.
+
+> If there are issues with your localnet run the following command to reset the localnet.
+
+```bash
+algokit localnet reset
+```
+
+### Problem 1-4: Instructions
+
+1. Make sure Python venv is activated in the `coding-assignment` terminal.
+2. Go to`coding-assignment/smart_contracts/nft_marketplace/contract.py` to find instructions for problems 1-4. Read the instructions and solve the problem!
+3. After solving all 4 problems run the following 2 commands to first build the smart contract and then run the `smart_contracts/nft_marketplace/deploy-config.ts` script.
 
 ```bash
 algokit project run build
@@ -90,10 +121,14 @@ algokit project run build
 algokit project deploy localnet
 ```
 
-실행 후 다음과 같은 콘솔 값이 출력되면 성공적으로 모든 문제를 해결하신겁니다! 👏👏
+> `deploy-config.ts` contains a script written with [AlgoKit Utils TypeScript](https://github.com/algorandfoundation/algokit-utils-ts/tree/main) that goes through the entire lifecycle of the nft marketplace contract by simulating a scenario where Taylor Swift concert ticket is being sold. Feel free to check out the code!
+
+If you see something similar in your console, you have successfully solved all 4 questions! 👏👏 Congratulations!
 <img width="833" alt="image" src="https://github.com/algorand-devrel/BAY-coding-assignment-2024/assets/52557585/53e96dc0-3117-4990-b926-1261b688ab79">
 
-## 체크포인트 4: 💯 과제 제출하는 방법
+## Checkpoint 4: 💯 How to submit your work
 
-1. 성공적으로 다섯 문제를 해결한 후 본인이 fork한 깃헙 리포로 코드를 푸쉬해주세요. 그런 다음 [원래의 리포로 Pull request를 해주세요.](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork)
-2. Pull Request 템플렛을 따라 출력된 값을 보여주는 터미널의 스크린샷을 첨부해주세요.
+lets submit your code so that the world knows you are now an Algorand Python developer!
+
+1. Push your code to the forked Github repo. [Then create a PR to the original repository.](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork)
+2. Follow the Pull Request template and attach the log of your console after running `algokit project deploy localnet`
