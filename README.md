@@ -124,7 +124,7 @@ algokit project deploy localnet
 > `deploy-config.ts` contains a script written with [AlgoKit Utils TypeScript](https://github.com/algorandfoundation/algokit-utils-ts/tree/main) that goes through the entire lifecycle of the nft marketplace contract by simulating a scenario where Taylor Swift concert ticket is being sold. Feel free to check out the code!
 
 If you see something similar in your console, you have successfully solved all 4 questions! 👏👏 Congratulations!
-<img width="833" alt="image" src="https://github.com/algorand-devrel/BAY-coding-assignment-2024/assets/52557585/53e96dc0-3117-4990-b926-1261b688ab79">
+<img width="933" alt="image" src="https://github.com/algorand-devrel/algorand-python-coding-assignment/assets/52557585/b1e0d39b-2bec-496e-abd1-6d74cd2ff5e9">
 
 ## Checkpoint 4: 💯 How to submit your work
 
