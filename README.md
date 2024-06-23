@@ -2,9 +2,9 @@
 
 ## 🚩 Let's build an NFT marketplace with Algorand Python!
 
-Welcome to your first step to become a master in Algorand Python!
+Welcome to your first step to becoming a master in Algorand Python!
 
-In this AlgoKit workspace, there are 2 sub projects:
+In this AlgoKit workspace, there are 2 sub-projects:
 
 - `python-demo`
 - `coding-assignment`
@@ -22,9 +22,9 @@ lifecycle of this app:
 1. The seller deploys the smart contract.
 2. The seller calls the bootstrap method to set the asset ID for sale, unitary price, and opt the contract into the ASA.
 3. The buyer calls the buy method to buy the ASA.
-4. The seller calls the withdraw_and_delete method to withdraw remaining ASA, profits, and then delete the smart contract.
+4. The seller calls the withdraw_and_delete method to withdraw the remaining ASA and profits, and then delete the smart contract.
 
-The coding assignment consist of 4 questions and for each question you can implement your code where it says `Write code here`
+The coding assignment consists of 4 questions and for each question you can implement your code where it says `Write code here`
 
 > Please carefully read and follow the checkpoints below to properly complete the coding assignment!
 
@@ -55,7 +55,7 @@ git clone [FORKED_REPO_URL]
 
 1. Open this project in VSCode
 2. Open the file named `algorand-python-coding-assignment.code-workspace` and press the `open workspace` button to activate workspace mode.
-3. 3 VSCode terminal will be auto created: `ROOT` `python-demo` `coding-assignment`. Now go to the `ROOT` VSCode terminal and run the following command to install dependencies required for both sub projects:
+3. 3 VSCode terminal will be auto-created: `ROOT` `python-demo` `coding-assignment`. Now go to the `ROOT` VSCode terminal and run the following command to install the dependencies required for both sub-projects:
 
 ```bash
 algokit project bootstrap all
@@ -89,11 +89,11 @@ https://github.com/algorand-fix-the-bug-campaign/challenge-1/assets/52557585/acd
 
 ## Checkpoint 3: 📝 Solve the problems!
 
-This coding assignment consist of **4 problems** in total. Follow the instructions below!
+This coding assignment consists of **4 problems** in total. Follow the instructions below!
 
 ### Launch localnet
 
-1. **_Open Docker Desktop first_** and then run the following command in your terminal to launch the local network. [Click me for more information of localnet!](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/features/localnet.md#creating--starting-the-localnet)
+1. **_Open Docker Desktop first_** and then run the following command in your terminal to launch the local network. [Click me for more information on localnet!](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/features/localnet.md#creating--starting-the-localnet)
 
 ```bash
 algokit localnet start
@@ -124,11 +124,11 @@ algokit project deploy localnet
 > `deploy-config.ts` contains a script written with [AlgoKit Utils TypeScript](https://github.com/algorandfoundation/algokit-utils-ts/tree/main) that goes through the entire lifecycle of the nft marketplace contract by simulating a scenario where Taylor Swift concert ticket is being sold. Feel free to check out the code!
 
 If you see something similar in your console, you have successfully solved all 4 questions! 👏👏 Congratulations!
-<img width="940" alt="image" src="https://github.com/algorand-devrel/algorand-python-coding-assignment/assets/52557585/d1bf6557-4d2d-4d11-8776-47940761e98a">
+<img width="940" alt="image" src="https://github.com/algorand-devrel/algorand-python-coding-assignment/assets/52557585/f55a445f-7029-4e35-a07a-cca1bd9d07b0">
 
 ## Checkpoint 4: 💯 How to submit your work
 
-lets submit your code so that the world knows you are now an Algorand Python developer!
+let's submit your code so the world knows you are now an Algorand Python developer!
 
 1. Push your code to the forked Github repo. [Then create a PR to the original repository.](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork)
 2. Follow the Pull Request template and attach the log of your console after running `algokit project deploy localnet`
