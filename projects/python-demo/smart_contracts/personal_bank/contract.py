@@ -34,9 +34,9 @@ class PersonalBank(ARC4Contract):
 
     @arc4.abimethod(allow_actions=["CloseOut"])
     def withdraw(self) -> UInt64:
-        assert self.balance[Txn.sender] > 0, "User balance must be greater than 0"
-
         userBalance = self.balance[Txn.sender]
+
+        assert userBalance > 0, "User balance must be greater than 0"
 
         itxn.Payment(
             receiver=Txn.sender,
